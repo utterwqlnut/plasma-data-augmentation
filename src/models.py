@@ -11,8 +11,27 @@ class PlasmaLSTM(nn.Module):
         self.n_layers = n_layers
         self.h_size = h_size
         self.lstm = nn.LSTM(n_input, h_size, n_layers, batch_first=True)
-        self.out = nn.Sequential(nn.Linear(n_input,1),nn.Sigmoid())
+        self.out = nn.Sequential(nn.Linear(h_size,1),nn.Sigmoid())
 
+    def forward(self, x):
+        lengths = [len(x[i])-len(torch.where(x[i]==-100)[0])/self.n_input for i in range(x.shape[0])]
+        
+        x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
+
+        x, hidden = self.lstm(x)
+        x, lengths = pad_packed_sequence(x, batch_first=True)
+
+        return self.out(x.mean(dim=1))
+    
+class PlasmaViewEncoderLSTM(nn.Module):
+    def __init__(self, n_input, n_layers, h_size):
+        super().__init__()
+        self.n_input = n_input
+        self.n_layers = n_layers
+        self.h_size = h_size
+        self.lstm = nn.LSTM(n_input, h_size, n_layers, batch_first=True)
+        self.out = nn.Sequential(nn.Linear(h_size,n_input),nn.ReLU(),nn.Linear(n_input,n_input)) 
+    
     def forward(self, x):
         lengths = [len(x[i])-len(torch.where(x[i]==-100)[0])/self.n_input for i in range(x.shape[0])]
         
@@ -41,8 +60,9 @@ class TimeSeriesViewMaker(nn.Module):
         elif layer_type == 'lstm':
             self.net = nn.Sequential(
                 nn.LSTM(input_size=self.n_dim+1, hidden_size=64, num_layers=n_layers, batch_first=True),
-                nn.InstanceNorm1d(num_features=self.n_dim),
-                nn.Linear(self.n_dim+1,self.n_dim),
+                extract_tensor(),
+                nn.LayerNorm(64),
+                nn.Linear(64,self.n_dim),
                 nn.LayerNorm(self.n_dim)
             )
         elif layer_type == 'transformer':
@@ -55,7 +75,7 @@ class TimeSeriesViewMaker(nn.Module):
             )
 
     def add_noise_channel(self, x):
-        return torch.cat((x,torch.rand(x[0].shape)),dim=1)
+        return torch.cat((x,torch.rand(x[:,:,0].unsqueeze(-1).shape)),dim=-1)
     
     def get_delta(self, y_pixels, eps=1e-4):
         '''Constrains the input perturbation by projecting it onto an L1 sphere taken'''
@@ -63,7 +83,8 @@ class TimeSeriesViewMaker(nn.Module):
         
         distortion_budget = self.distortion_budget
         delta = torch.tanh(y_pixels) # Project to [-1, 1]
-        avg_magnitude = delta.abs().mean([1,2,3], keepdim=True)
+
+        avg_magnitude = delta.abs().mean([1,2], keepdim=True)
         max_magnitude = distortion_budget
         delta = delta * max_magnitude / (avg_magnitude + eps)
         return delta
@@ -76,7 +97,6 @@ class TimeSeriesViewMaker(nn.Module):
         out = x+out
         return out
     
-
-
-
-
+class extract_tensor(nn.Module):
+    def forward(self,x):
+        return x[0]
