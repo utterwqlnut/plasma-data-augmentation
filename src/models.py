@@ -46,7 +46,7 @@ class TimeSeriesViewMaker(nn.Module):
     # Add noise channel -> Basic Net -> Obtain pertrubation projected onto L1 sphere -> Add pertrubitive noise -> Adversial Loss
     # We only really change this basic net
     # Maybe LSTM or Transformer since it allows for varied time lengths
-    def __init__(self, n_dim, n_layers, layer_type, activation, distortion_budget):
+    def __init__(self, n_dim, n_layers, layer_type, activation, distortion_budget, hidden_dim, n_head):
         super().__init__()
 
         self.n_dim = n_dim
@@ -59,17 +59,19 @@ class TimeSeriesViewMaker(nn.Module):
             pass
         elif layer_type == 'lstm':
             self.net = nn.Sequential(
-                nn.LSTM(input_size=self.n_dim+1, hidden_size=64, num_layers=n_layers, batch_first=True),
+                nn.LSTM(input_size=self.n_dim+1, hidden_size=hidden_dim, num_layers=n_layers, batch_first=True),
                 extract_tensor(),
-                nn.LayerNorm(64),
-                nn.Linear(64,self.n_dim),
+                nn.LayerNorm(hidden_dim),
+                activation,
+                nn.Linear(hidden_dim,self.n_dim),
                 nn.LayerNorm(self.n_dim)
             )
         elif layer_type == 'transformer':
-            transformer_layer = nn.TransformerEncoderLayer(d_model=self.n_dim+1, n_head=4, dim_feedforward=64, batch_first=True)
+            transformer_layer = nn.TransformerEncoderLayer(d_model=self.n_dim+1, n_head=n_head, dim_feedforward=hidden_dim, batch_first=True)
             self.net = nn.Sequential(
                 nn.TransformerEncoder(transformer_layer,n_layers),
                 nn.LayerNorm(self.n_dim+1),
+                activation,
                 nn.Linear(self.n_dim+1, self.n_dim),
                 nn.LayerNorm(self.n_dim)
             )

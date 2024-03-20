@@ -69,18 +69,18 @@ def train_post_hoc(train_dataloader, val_dataloader, optim, loss_fn, model, save
     return best_model
 
 class ViewMakerTrainer():
-    def __init__(self, train_dataset, val_dataset,batch_size, t, v_loss_weight, collate_fn, viewmaker, encoder):
+    def __init__(self, train_dataset, val_dataset,batch_size, t, v_loss_weight, collate_fn, viewmaker, encoder, v_lr, e_lr):
         self.configure_dataloaders(train_dataset, val_dataset, batch_size, collate_fn)
         self.t = t
         self.v_loss_weight = v_loss_weight
         self.v_loss_weight
         self.viewmaker = viewmaker
         self.encoder = encoder
-        self.configure_optimizers()
+        self.configure_optimizers(v_lr, e_lr)
 
-    def configure_optimizers(self):
-        self.encoder_optim = torch.optim.AdamW(self.encoder.parameters())
-        self.viewmaker_optim = torch.optim.AdamW(self.viewmaker.parameters())
+    def configure_optimizers(self, v_lr, e_lr):
+        self.encoder_optim = torch.optim.AdamW(self.encoder.parameters(), lr=e_lr)
+        self.viewmaker_optim = torch.optim.AdamW(self.viewmaker.parameters(), lr=v_lr)
 
 
     def configure_dataloaders(self, train_dataset, val_dataset, batch_size, collate_fn):
@@ -124,11 +124,8 @@ class ViewMakerTrainer():
                 val_running_v_loss += viewmaker_loss.item()
             
             print(f"Epoch: {epoch+1}")
-            print(f"Train Losses: Training Encoder Loss: {train_running_e_loss/len(self.train_dataloader)} Training Viewmaker Loss: {train_running_v_loss/len(self.train_dataloader)}")
-            print(f"Val Losses: Val Encoder Loss: {val_running_e_loss/len(self.val_dataloader)} Val Viewmaker Loss: {val_running_v_loss/len(self.val_dataloader)}")
-            
-            
-
+            print(f"Train Losses: Training Encoder Loss: {0.5*train_running_e_loss/len(self.train_dataloader)} Training Viewmaker Loss: {0.5*train_running_v_loss/len(self.train_dataloader)}")
+            print(f"Val Losses: Val Encoder Loss: {0.5*val_running_e_loss/len(self.val_dataloader)} Val Viewmaker Loss: {0.5*val_running_v_loss/len(self.val_dataloader)}")
 
 
 def l2_normalize(x, dim=1):
