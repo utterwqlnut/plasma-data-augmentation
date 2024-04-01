@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py", line 90, in <module>
-    compute_metrics_after_training(model, test_dataset)
-  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/eval.py", line 32, in compute_metrics_after_training
-    accuracy, f1, auc = compute_metrics(out,labels)
-  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/eval.py", line 8, in compute_metrics
-    binary_out = np.round(out.detach().numpy())
-AttributeError: 'list' object has no attribute 'detach'

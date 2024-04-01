@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py", line 65, in <module>
-    utils.set_up_wandb(
-  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/utils.py", line 28, in set_up_wandb
-    wandb_config = {**vars(model.config), **vars(training_args), **parsed_args}
-  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1688, in __getattr__
-    raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
-AttributeError: 'TimeSeriesViewMaker' object has no attribute 'config'
