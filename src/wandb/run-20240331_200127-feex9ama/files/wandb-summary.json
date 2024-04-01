@@ -1,0 +1,1 @@
+{"seed": 42, "_timestamp": 1711929694.010098, "_runtime": 6.429403066635132, "_step": 1, "Example View": {"_type": "image-file", "sha256": "bf7b68b0a52e2477a5e885dd9dca8d090dd4c8ada9b225bd0ebc90fafa59a6b1", "size": 89486, "path": "media/images/Example View_1_bf7b68b0a52e2477a5e8.png", "format": "png", "width": 640, "height": 480}, "_wandb": {"runtime": 7}}

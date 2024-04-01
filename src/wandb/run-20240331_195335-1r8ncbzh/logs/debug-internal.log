@@ -1,0 +1,105 @@
+2024-03-31 19:53:35,327 INFO    StreamThr :92056 [internal.py:wandb_internal():86] W&B internal server running at pid: 92056, started at: 2024-03-31 19:53:35.326138
+2024-03-31 19:53:35,330 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status
+2024-03-31 19:53:35,340 INFO    WriterThread:92056 [datastore.py:open_for_write():87] open: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/run-1r8ncbzh.wandb
+2024-03-31 19:53:35,340 DEBUG   SenderThread:92056 [sender.py:send():378] send: header
+2024-03-31 19:53:35,397 DEBUG   SenderThread:92056 [sender.py:send():378] send: run
+2024-03-31 19:53:35,826 INFO    SenderThread:92056 [dir_watcher.py:__init__():211] watching files in: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files
+2024-03-31 19:53:35,827 INFO    SenderThread:92056 [sender.py:_start_run_threads():1099] run started: 1r8ncbzh with start time 1711929215.329081
+2024-03-31 19:53:35,847 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: check_version
+2024-03-31 19:53:35,847 DEBUG   SenderThread:92056 [sender.py:send_request():405] send_request: check_version
+2024-03-31 19:53:36,160 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: run_start
+2024-03-31 19:53:36,167 DEBUG   HandlerThread:92056 [system_info.py:__init__():26] System info init
+2024-03-31 19:53:36,168 DEBUG   HandlerThread:92056 [system_info.py:__init__():41] System info init done
+2024-03-31 19:53:36,168 INFO    HandlerThread:92056 [system_monitor.py:start():194] Starting system monitor
+2024-03-31 19:53:36,168 INFO    SystemMonitor:92056 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-03-31 19:53:36,169 INFO    HandlerThread:92056 [system_monitor.py:probe():214] Collecting system info
+2024-03-31 19:53:36,169 DEBUG   HandlerThread:92056 [system_info.py:probe():150] Probing system
+2024-03-31 19:53:36,169 INFO    SystemMonitor:92056 [interfaces.py:start():190] Started cpu monitoring
+2024-03-31 19:53:36,170 INFO    SystemMonitor:92056 [interfaces.py:start():190] Started disk monitoring
+2024-03-31 19:53:36,172 INFO    SystemMonitor:92056 [interfaces.py:start():190] Started memory monitoring
+2024-03-31 19:53:36,172 INFO    SystemMonitor:92056 [interfaces.py:start():190] Started network monitoring
+2024-03-31 19:53:36,180 DEBUG   HandlerThread:92056 [system_info.py:_probe_git():135] Probing git
+2024-03-31 19:53:36,220 DEBUG   HandlerThread:92056 [system_info.py:_probe_git():143] Probing git done
+2024-03-31 19:53:36,221 DEBUG   HandlerThread:92056 [system_info.py:probe():198] Probing system done
+2024-03-31 19:53:36,221 DEBUG   HandlerThread:92056 [system_monitor.py:probe():223] {'os': 'macOS-10.16-x86_64-i386-64bit', 'python': '3.10.13', 'heartbeatAt': '2024-03-31T23:53:36.169749', 'startedAt': '2024-03-31T23:53:35.313658', 'docker': None, 'cuda': None, 'args': ('--viewmaker_n_layers=2', '--viewmaker_hidden_dim=12', '--encoder_n_layers=2', '--encoder_hidden_dim=12'), 'state': 'running', 'program': '/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py', 'codePathLocal': 'main.py', 'codePath': 'src/main.py', 'git': {'remote': 'git@github.com:utterwqlnut/plasma-data-augmentation.git', 'commit': '836a62887f25405716b5c5d2bcc4ab4b5d8402ac'}, 'email': 'dhruva.chayapathy@gmail.com', 'root': '/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation', 'host': 'Dhruvas-MacBook-Pro.local', 'username': 'dhruvachayapathy', 'executable': '/usr/local/Caskroom/miniconda/base/envs/plasma-aug/bin/python', 'cpu_count': 4, 'cpu_count_logical': 8, 'cpu_freq': {'current': 2400, 'min': 2400, 'max': 2400}, 'cpu_freq_per_core': [{'current': 2400, 'min': 2400, 'max': 2400}], 'disk': {'/': {'total': 393.9501724243164, 'used': 21.75124740600586}}, 'memory': {'total': 16.0}}
+2024-03-31 19:53:36,221 INFO    HandlerThread:92056 [system_monitor.py:probe():224] Finished collecting system info
+2024-03-31 19:53:36,221 INFO    HandlerThread:92056 [system_monitor.py:probe():227] Publishing system info
+2024-03-31 19:53:36,221 DEBUG   HandlerThread:92056 [system_info.py:_save_conda():207] Saving list of conda packages installed into the current environment
+2024-03-31 19:53:36,830 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/conda-environment.yaml
+2024-03-31 19:53:39,672 DEBUG   HandlerThread:92056 [system_info.py:_save_conda():219] Saving conda packages done
+2024-03-31 19:53:39,673 INFO    HandlerThread:92056 [system_monitor.py:probe():229] Finished publishing system info
+2024-03-31 19:53:39,677 DEBUG   SenderThread:92056 [sender.py:send():378] send: files
+2024-03-31 19:53:39,677 INFO    SenderThread:92056 [sender.py:_save_file():1365] saving file wandb-metadata.json with policy now
+2024-03-31 19:53:39,754 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: python_packages
+2024-03-31 19:53:39,754 DEBUG   SenderThread:92056 [sender.py:send_request():405] send_request: python_packages
+2024-03-31 19:53:39,756 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-31 19:53:39,756 DEBUG   SenderThread:92056 [sender.py:send():378] send: telemetry
+2024-03-31 19:53:39,756 DEBUG   SenderThread:92056 [sender.py:send_request():405] send_request: stop_status
+2024-03-31 19:53:39,757 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-31 19:53:39,777 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-31 19:53:39,836 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/conda-environment.yaml
+2024-03-31 19:53:39,836 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/wandb-metadata.json
+2024-03-31 19:53:39,836 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/requirements.txt
+2024-03-31 19:53:39,912 DEBUG   SenderThread:92056 [sender.py:send():378] send: config
+2024-03-31 19:53:39,912 DEBUG   SenderThread:92056 [sender.py:send():378] send: history
+2024-03-31 19:53:39,912 DEBUG   SenderThread:92056 [sender.py:send_request():405] send_request: summary_record
+2024-03-31 19:53:39,913 INFO    SenderThread:92056 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-31 19:53:40,085 INFO    wandb-upload_0:92056 [upload_job.py:push():131] Uploaded file /var/folders/3p/x1hjmpx55zbf70vx528h1ph40000gn/T/tmpdurvhjunwandb/uwd44tcc-wandb-metadata.json
+2024-03-31 19:53:40,837 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/wandb-summary.json
+2024-03-31 19:53:40,919 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:53:41,627 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-31 19:53:41,627 DEBUG   SenderThread:92056 [sender.py:send():378] send: files
+2024-03-31 19:53:41,628 INFO    SenderThread:92056 [sender.py:_save_file():1365] saving file media/images/Example View_1_916b6e43c4860a7fe29e.png with policy now
+2024-03-31 19:53:41,628 DEBUG   SenderThread:92056 [sender.py:send():378] send: history
+2024-03-31 19:53:41,628 DEBUG   SenderThread:92056 [sender.py:send_request():405] send_request: summary_record
+2024-03-31 19:53:41,630 INFO    SenderThread:92056 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-31 19:53:41,838 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/wandb-summary.json
+2024-03-31 19:53:41,838 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/media/images/Example View_1_916b6e43c4860a7fe29e.png
+2024-03-31 19:53:41,839 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:41,839 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/media
+2024-03-31 19:53:41,839 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/media/images
+2024-03-31 19:53:42,055 INFO    wandb-upload_0:92056 [upload_job.py:push():131] Uploaded file /var/folders/3p/x1hjmpx55zbf70vx528h1ph40000gn/T/tmpdurvhjunwandb/8xwkuuxb-media/images/Example View_1_916b6e43c4860a7fe29e.png
+2024-03-31 19:53:42,674 INFO    wandb-upload_0:92056 [upload_job.py:push():131] Uploaded file /var/folders/3p/x1hjmpx55zbf70vx528h1ph40000gn/T/tmpdurvhjunwandb/ze1d8ywy-media/images/Example View_1_916b6e43c4860a7fe29e.png
+2024-03-31 19:53:43,845 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:45,849 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:45,919 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:53:47,851 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:49,857 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:50,919 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:53:51,863 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:53,869 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:54,756 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-31 19:53:54,756 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-31 19:53:54,756 DEBUG   SenderThread:92056 [sender.py:send_request():405] send_request: stop_status
+2024-03-31 19:53:55,875 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:55,923 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:53:57,881 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:53:59,889 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:00,927 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:54:01,899 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:03,901 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:05,919 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:05,954 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:54:06,923 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/config.yaml
+2024-03-31 19:54:07,924 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:09,761 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-31 19:54:09,761 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-31 19:54:09,762 DEBUG   SenderThread:92056 [sender.py:send_request():405] send_request: stop_status
+2024-03-31 19:54:09,932 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:11,090 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:54:11,937 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:13,942 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:15,950 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:16,090 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:54:17,954 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:19,961 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:21,362 DEBUG   HandlerThread:92056 [handler.py:handle_request():146] handle_request: status_report
+2024-03-31 19:54:21,968 INFO    Thread-12 :92056 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240331_195335-1r8ncbzh/files/output.log
+2024-03-31 19:54:22,219 INFO    cpu       :92056 [interfaces.py:monitor():140] Process cpu has exited.
+2024-03-31 19:54:22,220 DEBUG   SystemMonitor:92056 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-03-31 19:54:22,220 DEBUG   SystemMonitor:92056 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2024-03-31 19:54:22,220 DEBUG   SystemMonitor:92056 [system_monitor.py:_start():183] Publishing last batch of metrics
+2024-03-31 19:54:22,222 DEBUG   SenderThread:92056 [sender.py:send():378] send: stats
+2024-03-31 19:54:24,287 INFO    MainThread:92056 [internal.py:handle_exit():76] Internal process exited
+2024-03-31 19:54:24,472 WARNING StreamThr :92056 [internal.py:is_dead():414] Internal process exiting, parent pid 91747 disappeared
+2024-03-31 19:54:24,472 ERROR   StreamThr :92056 [internal.py:wandb_internal():152] Internal process shutdown.

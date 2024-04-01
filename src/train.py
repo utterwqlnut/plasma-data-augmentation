@@ -1,12 +1,11 @@
-from data import PlasmaDataset, generate_datasets, collate_fn
-from models import PlasmaLSTM
+from data import PlasmaDataset, generate_datasets
 import os
 from torch.utils.data import DataLoader
 import torch
 import copy
 from eval import compute_metrics
 import math
-
+import wandb
 
 def train_post_hoc(train_dataloader, val_dataloader, optim, loss_fn, model, save_metric, num_epochs):
     # Train PostHoc LSTM
@@ -62,8 +61,15 @@ def train_post_hoc(train_dataloader, val_dataloader, optim, loss_fn, model, save
             best_model = copy.deepcopy(model)
             min_metric = running_metric
 
+        wandb.log({'Post Hoc Epoch': epoch+1})
+        wandb.log({'Post Hoc Training Loss': train_running_loss/len(train_dataloader),
+                   'Post Hoc Validation Loss': val_running_loss/len(val_dataloader),
+                   'Validation Accuracy': running_accuracy/len(val_dataloader),
+                   'Validation F1': running_f1/len(val_dataloader),
+                   'Validation AUC': running_auc/len(val_dataloader)})
+
         print(f"Epoch: {epoch+1}")
-        print(f"Losses: Training Loss: {train_running_loss/len(train_dataloader)} Validation Loss: {train_running_loss/len(train_dataloader)}")
+        print(f"Losses: Training Loss: {train_running_loss/len(train_dataloader)} Validation Loss: {val_running_loss/len(val_dataloader)}")
         print(f"Metrics: Validation Accuracy: {running_accuracy/len(val_dataloader)} Validation F1: {running_f1/len(val_dataloader)} Validation AUC: {running_auc/len(val_dataloader)}")
 
     return best_model
@@ -123,9 +129,15 @@ class ViewMakerTrainer():
                 val_running_e_loss += encoder_loss.item()
                 val_running_v_loss += viewmaker_loss.item()
             
+            wandb.log({'Epoch': epoch+1})
+            wandb.log({'Encoder Training Loss': train_running_e_loss/len(self.train_dataloader),
+                   'Viewmaker Training Loss': train_running_v_loss/len(self.train_dataloader),
+                   'Viewmaker Validation Loss': val_running_v_loss/len(self.val_dataloader),
+                   'Encoder Validation Loss': val_running_e_loss/len(self.val_dataloader)})
+
             print(f"Epoch: {epoch+1}")
-            print(f"Train Losses: Training Encoder Loss: {0.5*train_running_e_loss/len(self.train_dataloader)} Training Viewmaker Loss: {0.5*train_running_v_loss/len(self.train_dataloader)}")
-            print(f"Val Losses: Val Encoder Loss: {0.5*val_running_e_loss/len(self.val_dataloader)} Val Viewmaker Loss: {0.5*val_running_v_loss/len(self.val_dataloader)}")
+            print(f"Train Losses: Training Encoder Loss: {train_running_e_loss/len(self.train_dataloader)} Training Viewmaker Loss: {train_running_v_loss/len(self.train_dataloader)}")
+            print(f"Val Losses: Val Encoder Loss: {val_running_e_loss/len(self.val_dataloader)} Val Viewmaker Loss: {val_running_v_loss/len(self.val_dataloader)}")
 
 
 def l2_normalize(x, dim=1):

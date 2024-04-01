@@ -1,0 +1,79 @@
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'v_lr' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'e_lr' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'balance' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'viewmaker_n_head' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'viewmaker_n_layers' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'viewmaker_activation' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'viewmaker_distortion_budget' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'viewmaker_hidden_dim' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'viewmaker_layer_type' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'encoder_n_layers' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'encoder_hidden_dim' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'viewmaker_loss_t' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'viewmaker_loss_weight' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'post_hoc_n_layers' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'post_hoc_h_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'post_hoc_lr' was locked by 'sweep' (ignored update).
+Epoch: 1
+Train Losses: Training Encoder Loss: 0.48928807973861693 Training Viewmaker Loss: -0.1821754828095436
+Val Losses: Val Encoder Loss: 0.8744717836380005 Val Viewmaker Loss: -0.3255900233983994
+Epoch: 2
+Train Losses: Training Encoder Loss: 0.692061111330986 Training Viewmaker Loss: -0.2576734900474548
+Val Losses: Val Encoder Loss: 0.8013603292405606 Val Viewmaker Loss: -0.2983686126768589
+Epoch: 3
+Train Losses: Training Encoder Loss: 0.3252543032169342 Training Viewmaker Loss: -0.12110117375850678
+Val Losses: Val Encoder Loss: 0.3655493423342705 Val Viewmaker Loss: -0.13610412552952766
+Epoch: 4
+Train Losses: Training Encoder Loss: 0.5478715250268579 Training Viewmaker Loss: -0.2039877169765532
+Val Losses: Val Encoder Loss: 0.372428385913372 Val Viewmaker Loss: -0.13866539038717746
+Epoch: 5
+Train Losses: Training Encoder Loss: 0.686398321390152 Training Viewmaker Loss: -0.2555650807917118
+Val Losses: Val Encoder Loss: 0.2004179686307907 Val Viewmaker Loss: -0.0746211513876915
+Epoch: 6
+Train Losses: Training Encoder Loss: 0.23616561591625213 Training Viewmaker Loss: -0.08793099150061608
+Val Losses: Val Encoder Loss: 0.39211223628371955 Val Viewmaker Loss: -0.1459942299872637
+Epoch: 7
+Train Losses: Training Encoder Loss: 0.49442304149270055 Training Viewmaker Loss: -0.18408737368881703
+Val Losses: Val Encoder Loss: 0.2429922766983509 Val Viewmaker Loss: -0.09047274626791477
+Epoch: 8
+Train Losses: Training Encoder Loss: 0.7814701139926911 Training Viewmaker Loss: -0.2909629374742508
+Val Losses: Val Encoder Loss: 0.03010164499282837 Val Viewmaker Loss: -0.01120767667889595
+Epoch: 9
+Train Losses: Training Encoder Loss: 0.2274515748023987 Training Viewmaker Loss: -0.08468651100993156
+Val Losses: Val Encoder Loss: 0.24796817153692247 Val Viewmaker Loss: -0.09232540652155877
+Epoch: 10
+Train Losses: Training Encoder Loss: 0.42244605123996737 Training Viewmaker Loss: -0.15728834718465806
+Val Losses: Val Encoder Loss: 0.17301076464354992 Val Viewmaker Loss: -0.06441669203341008
+Epoch: 1
+Losses: Training Loss: 0.6144412557284037 Validation Loss: 0.6017347044414945
+Metrics: Validation Accuracy: 0.7870370370370372 Validation F1: 0.0 Validation AUC: 0.5
+Epoch: 2
+Losses: Training Loss: 0.5846299793985155 Validation Loss: 0.5620822840266757
+Metrics: Validation Accuracy: 0.7870370370370371 Validation F1: 0.0 Validation AUC: 0.5
+Epoch: 3
+Losses: Training Loss: 0.5523655977514055 Validation Loss: 0.49053927262624103
+Metrics: Validation Accuracy: 0.787037037037037 Validation F1: 0.0 Validation AUC: 0.5
+Epoch: 4
+Losses: Training Loss: 0.4638988475004832 Validation Loss: 0.5105343229240842
+Metrics: Validation Accuracy: 0.7685185185185186 Validation F1: 0.0 Validation AUC: 0.5
+Epoch: 5
+Losses: Training Loss: 0.43668266468577915 Validation Loss: 0.4640183299779892
+Metrics: Validation Accuracy: 0.7870370370370369 Validation F1: 0.0 Validation AUC: 0.5
+/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1509: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no true nor predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+Traceback (most recent call last):
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py", line 87, in <module>
+    best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=test_dataloader, model=model,optim=adam,loss_fn=loss_fn, save_metric=save_metric, num_epochs=post_hoc_num_epochs)
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/train.py", line 42, in train_post_hoc
+    accuracy, f1, auc = compute_metrics(out,labels)
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/eval.py", line 10, in compute_metrics
+    return accuracy_score(labels, binary_out), f1_score(labels, binary_out), roc_auc_score(labels, binary_out)
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/utils/_param_validation.py", line 213, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/metrics/_ranking.py", line 640, in roc_auc_score
+    return _average_binary_score(
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/metrics/_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/metrics/_ranking.py", line 382, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.

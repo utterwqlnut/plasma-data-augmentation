@@ -1,0 +1,1 @@
+{"seed": 42, "_timestamp": 1711592411.328546, "_runtime": 23.909343004226685, "_step": 4, "Epoch": 2, "Encoder Training Loss": 0.09743328094482422, "Viewmaker Training Loss": -0.06609615287743509, "Viewmaker Validation Loss": -0.06921573304571212, "Encoder Validation Loss": 0.10203189849853515, "_wandb": {"runtime": 22}}

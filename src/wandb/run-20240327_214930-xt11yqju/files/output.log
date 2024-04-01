@@ -1,0 +1,16 @@
+Epoch: 1
+Train Losses: Training Encoder Loss: 8.36484375 Training Viewmaker Loss: -4.182421875
+Val Losses: Val Encoder Loss: 2.0001953125 Val Viewmaker Loss: -1.00009765625
+Epoch: 2
+Train Losses: Training Encoder Loss: 1.9986328125 Training Viewmaker Loss: -0.99931640625
+Val Losses: Val Encoder Loss: 0.3154296875 Val Viewmaker Loss: -0.15771484375
+Epoch: 3
+Train Losses: Training Encoder Loss: 0.94453125 Training Viewmaker Loss: -0.472265625
+Val Losses: Val Encoder Loss: 0.565625 Val Viewmaker Loss: -0.2828125
+Epoch: 4
+Train Losses: Training Encoder Loss: 1.116796875 Training Viewmaker Loss: -0.5583984375
+Val Losses: Val Encoder Loss: 0.1873046875 Val Viewmaker Loss: -0.09365234375
+Traceback (most recent call last):
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py", line 74, in <module>
+    plot_view(viewmaker, test_dataset[0]['inputs_embeds'].unsqueeze(0), test_dataset.scaler)
+AttributeError: 'PlasmaDataset' object has no attribute 'scaler'

@@ -1,0 +1,34 @@
+wandb_version: 1
+
+balance:
+  value: true
+e_lr:
+  value: 0.0001
+encoder_hidden_dim:
+  value: 24
+encoder_n_layers:
+  value: 2
+post_hoc_h_size:
+  value: 24
+post_hoc_lr:
+  value: 0.001
+post_hoc_n_layers:
+  value: 2
+v_lr:
+  value: 1.0e-05
+viewmaker_activation:
+  value: relu
+viewmaker_distortion_budget:
+  value: 0.2740201996616449
+viewmaker_hidden_dim:
+  value: 32
+viewmaker_layer_type:
+  value: lstm
+viewmaker_loss_t:
+  value: 0.020524779748178592
+viewmaker_loss_weight:
+  value: 0.6890587181954727
+viewmaker_n_head:
+  value: 1
+viewmaker_n_layers:
+  value: 4

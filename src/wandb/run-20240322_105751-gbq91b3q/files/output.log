@@ -1,0 +1,18 @@
+Epoch: 1
+Train Losses: Training Encoder Loss: -0.27812498807907104 Training Viewmaker Loss: 0.13906249403953552
+Val Losses: Val Encoder Loss: 0.0595703125 Val Viewmaker Loss: -0.02978515625
+Epoch: 2
+Train Losses: Training Encoder Loss: 1.5378906726837158 Training Viewmaker Loss: -0.7689453363418579
+Val Losses: Val Encoder Loss: 0.01914062537252903 Val Viewmaker Loss: -0.009570312686264515
+Epoch: 3
+Train Losses: Training Encoder Loss: 0.30195313692092896 Training Viewmaker Loss: -0.15097656846046448
+Val Losses: Val Encoder Loss: 0.02597656287252903 Val Viewmaker Loss: -0.012988281436264515
+Epoch: 4
+Train Losses: Training Encoder Loss: 0.008007812313735485 Training Viewmaker Loss: -0.0040039061568677425
+Val Losses: Val Encoder Loss: -0.0005859375232830644 Val Viewmaker Loss: 0.0002929687616415322
+Traceback (most recent call last):
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py", line 71, in <module>
+    plot_view(viewmaker, test_dataset[0]['inputs_embeds'].unsqueeze(0), test_dataset.scaler)
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/eval.py", line 23, in plot_view
+    wandb.log({"Example View",wandb.Image(fig)})
+TypeError: unhashable type: 'Image'

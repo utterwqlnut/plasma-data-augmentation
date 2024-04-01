@@ -1,0 +1,28 @@
+2024-03-22 10:57:51,249 INFO    MainThread:35437 [wandb_setup.py:_flush():76] Current SDK version is 0.16.4
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_setup.py:_flush():76] Configure stats pid to 35437
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_setup.py:_flush():76] Loading settings from /Users/dhruvachayapathy/.config/wandb/settings
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_setup.py:_flush():76] Loading settings from /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/settings
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'src/main.py', 'program_abspath': '/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py', 'program': '/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py'}
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_init.py:_log_setup():526] Logging user logs to /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240322_105751-gbq91b3q/logs/debug.log
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_init.py:_log_setup():527] Logging internal logs to /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240322_105751-gbq91b3q/logs/debug-internal.log
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_init.py:init():566] calling init triggers
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_init.py:init():573] wandb.init called with sweep_config: {}
+config: {}
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_init.py:init():616] starting backend
+2024-03-22 10:57:51,250 INFO    MainThread:35437 [wandb_init.py:init():620] setting up manager
+2024-03-22 10:57:51,256 INFO    MainThread:35437 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn,fork,forkserver, using: spawn
+2024-03-22 10:57:51,259 INFO    MainThread:35437 [wandb_init.py:init():628] backend started and connected
+2024-03-22 10:57:51,269 INFO    MainThread:35437 [wandb_init.py:init():720] updated telemetry
+2024-03-22 10:57:51,298 INFO    MainThread:35437 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-03-22 10:57:51,875 INFO    MainThread:35437 [wandb_run.py:_on_init():2262] communicating current version
+2024-03-22 10:57:52,460 INFO    MainThread:35437 [wandb_run.py:_on_init():2271] got version response 
+2024-03-22 10:57:52,460 INFO    MainThread:35437 [wandb_init.py:init():804] starting run threads in backend
+2024-03-22 10:57:55,647 INFO    MainThread:35437 [wandb_run.py:_console_start():2241] atexit reg
+2024-03-22 10:57:55,648 INFO    MainThread:35437 [wandb_run.py:_redirect():2096] redirect: wrap_raw
+2024-03-22 10:57:55,648 INFO    MainThread:35437 [wandb_run.py:_redirect():2161] Wrapping output streams.
+2024-03-22 10:57:55,648 INFO    MainThread:35437 [wandb_run.py:_redirect():2186] Redirects installed.
+2024-03-22 10:57:55,649 INFO    MainThread:35437 [wandb_init.py:init():847] run started, returning control to user process
+2024-03-22 10:57:55,728 INFO    MainThread:35437 [wandb_run.py:_config_callback():1343] config_cb None None {'batch_size': 24, 't': 0.0001, 'v_loss_weight': 0.5, 'v_lr': 0.001, 'e_lr': 0.001, 'viewmaker': 'TimeSeriesViewMaker(\n  (activation): ReLU()\n  (net): Sequential(\n    (0): LSTM(13, 64, num_layers=3, batch_first=True)\n    (1): extract_tensor()\n    (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)\n    (3): ReLU()\n    (4): Linear(in_features=64, out_features=12, bias=True)\n    (5): LayerNorm((12,), eps=1e-05, elementwise_affine=True)\n  )\n)', 'encoder': 'PlasmaViewEncoderLSTM(\n  (lstm): LSTM(12, 64, num_layers=3, batch_first=True)\n  (out): Sequential(\n    (0): Linear(in_features=64, out_features=12, bias=True)\n    (1): ReLU()\n    (2): Linear(in_features=12, out_features=12, bias=True)\n  )\n)', 'train_dataset': '<data.PlasmaDataset object at 0x7f9a4e3a7100>', 'val_dataset': '<data.PlasmaDataset object at 0x7f9a4e4abb20>', 'collate_fn': 'data.collate_fn', 'viewmaker_n_head': 1, 'viewmaker_n_layers': 3, 'viewmaker_activation': 'relu', 'viewmaker_distortion_budget': 0.1, 'viewmaker_hidden_dim': 64, 'viewmaker_layer_type': 'lstm', 'encoder_n_layers': 3, 'encoder_hidden_dim': 64, 'viewmaker_loss_t': 0.0001, 'viewmaker_loss_weight': 0.5, 'viewmaker_batch_size': 24, 'viewmaker_num_epochs': 4, 'post_hoc_n_layers': 2, 'post_hoc_h_size': 12, 'post_hoc_num_epochs': 2, 'post_hoc_save_metric': 'accuracy', 'post_hoc_batch_size': 24, 'post_hoc_lr': 0.001}
+2024-03-22 10:58:32,645 WARNING MsgRouterThr:35437 [router.py:message_loop():77] message_loop has been closed

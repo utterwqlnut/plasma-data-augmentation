@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py", line 77, in <module>
+    distort_dataset(train_dataset, viewmaker, 5, 1)
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/data.py", line 136, in distort_dataset
+    new_inputs_embeds.append(model(dataset.inputs_embeds[i]))
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/models.py", line 95, in forward
+    out = self.add_noise_channel(x)
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/models.py", line 80, in add_noise_channel
+    return torch.cat((x,torch.rand(x[:,:,0].unsqueeze(-1).shape)),dim=-1)
+IndexError: too many indices for tensor of dimension 2

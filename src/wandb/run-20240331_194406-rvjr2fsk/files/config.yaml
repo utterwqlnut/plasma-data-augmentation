@@ -1,0 +1,129 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.10.13
+    cli_version: 0.16.4
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1711928646.0
+    t:
+      1:
+      - 1
+      - 5
+      - 53
+      - 55
+      2:
+      - 1
+      - 5
+      - 53
+      - 55
+      3:
+      - 23
+      4: 3.10.13
+      5: 0.16.4
+      8:
+      - 5
+      13: darwin-x86_64
+batch_size:
+  desc: null
+  value: 12
+t:
+  desc: null
+  value: 0.0001
+v_loss_weight:
+  desc: null
+  value: 0.5
+v_lr:
+  desc: null
+  value: 0.001
+e_lr:
+  desc: null
+  value: 0.001
+viewmaker:
+  desc: null
+  value: "TimeSeriesViewMaker(\n  (activation): ReLU()\n  (net): Sequential(\n   \
+    \ (0): LSTM(13, 12, num_layers=2, batch_first=True)\n    (1): extract_tensor()\n\
+    \    (2): LayerNorm((12,), eps=1e-05, elementwise_affine=True)\n    (3): ReLU()\n\
+    \    (4): Linear(in_features=12, out_features=12, bias=True)\n    (5): LayerNorm((12,),\
+    \ eps=1e-05, elementwise_affine=True)\n  )\n)"
+encoder:
+  desc: null
+  value: "PlasmaViewEncoderLSTM(\n  (lstm): LSTM(12, 12, num_layers=2, batch_first=True)\n\
+    \  (out): Sequential(\n    (0): Linear(in_features=12, out_features=12, bias=True)\n\
+    \    (1): ReLU()\n    (2): Linear(in_features=12, out_features=12, bias=True)\n\
+    \  )\n)"
+train_dataset:
+  desc: null
+  value: <data.PlasmaDataset object at 0x7fddcd4a3f40>
+val_dataset:
+  desc: null
+  value: <data.PlasmaDataset object at 0x7fddcad97400>
+collate_fn:
+  desc: null
+  value: data.viewmaker_collate_fn
+included_machines:
+  desc: null
+  value:
+  - cmod
+  - east
+  - d3d
+balance:
+  desc: null
+  value: true
+viewmaker_n_head:
+  desc: null
+  value: 1
+viewmaker_n_layers:
+  desc: null
+  value: 2
+viewmaker_activation:
+  desc: null
+  value: relu
+viewmaker_distortion_budget:
+  desc: null
+  value: 0.1
+viewmaker_hidden_dim:
+  desc: null
+  value: 12
+viewmaker_layer_type:
+  desc: null
+  value: lstm
+encoder_n_layers:
+  desc: null
+  value: 2
+encoder_hidden_dim:
+  desc: null
+  value: 12
+viewmaker_loss_t:
+  desc: null
+  value: 0.0001
+viewmaker_loss_weight:
+  desc: null
+  value: 0.5
+viewmaker_batch_size:
+  desc: null
+  value: 12
+viewmaker_num_epochs:
+  desc: null
+  value: 10
+post_hoc_n_layers:
+  desc: null
+  value: 2
+post_hoc_h_size:
+  desc: null
+  value: 12
+post_hoc_num_epochs:
+  desc: null
+  value: 10
+post_hoc_save_metric:
+  desc: null
+  value: accuracy
+post_hoc_batch_size:
+  desc: null
+  value: 12
+post_hoc_lr:
+  desc: null
+  value: 0.001

@@ -1,0 +1,28 @@
+Epoch: 1
+Train Losses: Training Encoder Loss: 1.289453125 Training Viewmaker Loss: -0.6447265625
+Val Losses: Val Encoder Loss: 0.205078125 Val Viewmaker Loss: -0.1025390625
+Epoch: 2
+Train Losses: Training Encoder Loss: 0.2162109375 Training Viewmaker Loss: -0.10810546875
+Val Losses: Val Encoder Loss: 0.9 Val Viewmaker Loss: -0.45
+Epoch: 3
+Train Losses: Training Encoder Loss: 0.6037109375 Training Viewmaker Loss: -0.30185546875
+Val Losses: Val Encoder Loss: 0.2326171875 Val Viewmaker Loss: -0.11630859375
+Epoch: 4
+Train Losses: Training Encoder Loss: 0.5021484375 Training Viewmaker Loss: -0.25107421875
+Val Losses: Val Encoder Loss: 0.14609375 Val Viewmaker Loss: -0.073046875
+Traceback (most recent call last):
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py", line 87, in <module>
+    best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=test_dataloader, model=model,optim=adam,loss_fn=loss_fn, save_metric=save_metric, num_epochs=post_hoc_num_epochs)
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/train.py", line 42, in train_post_hoc
+    accuracy, f1, auc = compute_metrics(out,labels)
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/eval.py", line 10, in compute_metrics
+    return accuracy_score(labels, binary_out), f1_score(labels, binary_out), roc_auc_score(labels, binary_out)
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/utils/_param_validation.py", line 213, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/metrics/_ranking.py", line 640, in roc_auc_score
+    return _average_binary_score(
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/metrics/_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/lib/python3.10/site-packages/sklearn/metrics/_ranking.py", line 382, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.

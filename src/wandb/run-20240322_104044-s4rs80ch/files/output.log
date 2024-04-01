@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py", line 65, in <module>
+    utils.set_up_wandb(
+  File "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/utils.py", line 28, in set_up_wandb
+    wandb_config = {**vars(training_args), **parsed_args}
+TypeError: vars() argument must have __dict__ attribute

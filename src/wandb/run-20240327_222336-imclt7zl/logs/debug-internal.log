@@ -1,0 +1,349 @@
+2024-03-27 22:23:36,819 INFO    StreamThr :63008 [internal.py:wandb_internal():86] W&B internal server running at pid: 63008, started at: 2024-03-27 22:23:36.818622
+2024-03-27 22:23:36,820 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status
+2024-03-27 22:23:36,841 INFO    WriterThread:63008 [datastore.py:open_for_write():87] open: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/run-imclt7zl.wandb
+2024-03-27 22:23:36,841 DEBUG   SenderThread:63008 [sender.py:send():378] send: header
+2024-03-27 22:23:36,877 DEBUG   SenderThread:63008 [sender.py:send():378] send: run
+2024-03-27 22:23:37,245 INFO    SenderThread:63008 [dir_watcher.py:__init__():211] watching files in: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files
+2024-03-27 22:23:37,245 INFO    SenderThread:63008 [sender.py:_start_run_threads():1099] run started: imclt7zl with start time 1711592616.820599
+2024-03-27 22:23:37,265 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: check_version
+2024-03-27 22:23:37,265 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: check_version
+2024-03-27 22:23:37,484 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: run_start
+2024-03-27 22:23:37,490 DEBUG   HandlerThread:63008 [system_info.py:__init__():26] System info init
+2024-03-27 22:23:37,491 DEBUG   HandlerThread:63008 [system_info.py:__init__():41] System info init done
+2024-03-27 22:23:37,491 INFO    HandlerThread:63008 [system_monitor.py:start():194] Starting system monitor
+2024-03-27 22:23:37,491 INFO    SystemMonitor:63008 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-03-27 22:23:37,492 INFO    HandlerThread:63008 [system_monitor.py:probe():214] Collecting system info
+2024-03-27 22:23:37,492 INFO    SystemMonitor:63008 [interfaces.py:start():190] Started cpu monitoring
+2024-03-27 22:23:37,492 INFO    SystemMonitor:63008 [interfaces.py:start():190] Started disk monitoring
+2024-03-27 22:23:37,493 DEBUG   HandlerThread:63008 [system_info.py:probe():150] Probing system
+2024-03-27 22:23:37,494 INFO    SystemMonitor:63008 [interfaces.py:start():190] Started memory monitoring
+2024-03-27 22:23:37,495 INFO    SystemMonitor:63008 [interfaces.py:start():190] Started network monitoring
+2024-03-27 22:23:37,502 DEBUG   HandlerThread:63008 [system_info.py:_probe_git():135] Probing git
+2024-03-27 22:23:37,541 DEBUG   HandlerThread:63008 [system_info.py:_probe_git():143] Probing git done
+2024-03-27 22:23:37,541 DEBUG   HandlerThread:63008 [system_info.py:probe():198] Probing system done
+2024-03-27 22:23:37,541 DEBUG   HandlerThread:63008 [system_monitor.py:probe():223] {'os': 'macOS-10.16-x86_64-i386-64bit', 'python': '3.10.13', 'heartbeatAt': '2024-03-28T02:23:37.493187', 'startedAt': '2024-03-28T02:23:36.802553', 'docker': None, 'cuda': None, 'args': ('--balance=False', '--e_lr=0.001', '--encoder_hidden_dim=24', '--encoder_n_layers=2', '--post_hoc_h_size=32', '--post_hoc_lr=1e-05', '--post_hoc_n_layers=2', '--v_lr=1e-05', '--viewmaker_activation=relu', '--viewmaker_distortion_budget=0.3051115634653905', '--viewmaker_hidden_dim=32', '--viewmaker_layer_type=lstm', '--viewmaker_loss_t=0.026679684227439784', '--viewmaker_loss_weight=0.33989626508324977', '--viewmaker_n_head=1', '--viewmaker_n_layers=3'), 'state': 'running', 'program': '/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py', 'codePathLocal': 'main.py', 'codePath': 'src/main.py', 'git': {'remote': 'git@github.com:utterwqlnut/plasma-data-augmentation.git', 'commit': '836a62887f25405716b5c5d2bcc4ab4b5d8402ac'}, 'email': 'dhruva.chayapathy@gmail.com', 'root': '/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation', 'host': 'Dhruvas-MacBook-Pro.local', 'username': 'dhruvachayapathy', 'executable': '/usr/local/Caskroom/miniconda/base/envs/plasma-aug/bin/python3', 'cpu_count': 4, 'cpu_count_logical': 8, 'cpu_freq': {'current': 2400, 'min': 2400, 'max': 2400}, 'cpu_freq_per_core': [{'current': 2400, 'min': 2400, 'max': 2400}], 'disk': {'/': {'total': 393.9501724243164, 'used': 21.75124740600586}}, 'memory': {'total': 16.0}}
+2024-03-27 22:23:37,542 INFO    HandlerThread:63008 [system_monitor.py:probe():224] Finished collecting system info
+2024-03-27 22:23:37,542 INFO    HandlerThread:63008 [system_monitor.py:probe():227] Publishing system info
+2024-03-27 22:23:37,542 DEBUG   HandlerThread:63008 [system_info.py:_save_conda():207] Saving list of conda packages installed into the current environment
+2024-03-27 22:23:38,249 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/conda-environment.yaml
+2024-03-27 22:23:40,749 DEBUG   HandlerThread:63008 [system_info.py:_save_conda():219] Saving conda packages done
+2024-03-27 22:23:40,750 INFO    HandlerThread:63008 [system_monitor.py:probe():229] Finished publishing system info
+2024-03-27 22:23:40,755 DEBUG   SenderThread:63008 [sender.py:send():378] send: files
+2024-03-27 22:23:40,755 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-metadata.json with policy now
+2024-03-27 22:23:40,825 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: python_packages
+2024-03-27 22:23:40,826 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: python_packages
+2024-03-27 22:23:40,827 DEBUG   SenderThread:63008 [sender.py:send():378] send: telemetry
+2024-03-27 22:23:40,827 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-27 22:23:40,828 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: stop_status
+2024-03-27 22:23:40,829 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:23:40,858 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:23:41,020 DEBUG   SenderThread:63008 [sender.py:send():378] send: config
+2024-03-27 22:23:41,020 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:23:41,020 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:23:41,021 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:23:41,205 INFO    wandb-upload_0:63008 [upload_job.py:push():131] Uploaded file /var/folders/3p/x1hjmpx55zbf70vx528h1ph40000gn/T/tmpzhg6y5kkwandb/221vog7e-wandb-metadata.json
+2024-03-27 22:23:41,255 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/conda-environment.yaml
+2024-03-27 22:23:41,255 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/requirements.txt
+2024-03-27 22:23:41,255 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:23:41,255 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-metadata.json
+2024-03-27 22:23:41,255 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:23:42,022 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:23:43,262 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:23:47,033 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:23:52,044 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:23:52,595 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:23:52,596 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:23:52,597 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:23:52,597 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:23:52,599 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:23:52,600 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:23:52,601 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:23:52,601 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:23:53,291 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:23:55,301 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:23:55,830 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:23:55,830 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-27 22:23:55,831 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: stop_status
+2024-03-27 22:23:58,025 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:03,039 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:04,521 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:04,521 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:04,522 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:04,523 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:04,524 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:04,524 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:04,524 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:04,525 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:05,338 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:24:07,345 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:24:08,540 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:09,351 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/config.yaml
+2024-03-27 22:24:10,829 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-27 22:24:10,830 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: stop_status
+2024-03-27 22:24:10,831 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:24:14,025 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:16,614 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:16,614 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:16,615 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:16,616 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:16,617 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:16,618 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:16,618 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:16,619 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:17,387 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:24:19,394 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:24:19,628 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:24,638 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:25,837 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-27 22:24:25,837 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: stop_status
+2024-03-27 22:24:25,839 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:24:27,497 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:27,497 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:27,498 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:27,498 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:27,500 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:27,500 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:27,500 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:27,501 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:28,425 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:24:29,431 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:24:30,509 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:35,523 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:37,504 DEBUG   SystemMonitor:63008 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-03-27 22:24:37,505 DEBUG   SenderThread:63008 [sender.py:send():378] send: stats
+2024-03-27 22:24:37,877 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:37,878 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:37,879 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:37,879 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:37,880 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:37,880 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:37,881 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:37,881 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:38,454 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:24:39,457 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:24:40,840 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-27 22:24:40,841 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: stop_status
+2024-03-27 22:24:40,843 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:24:41,004 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:46,022 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:49,359 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:49,359 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:24:49,360 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:49,360 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:49,361 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:49,362 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:24:49,362 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:24:49,362 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:24:49,496 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:24:51,370 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:24:51,501 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:24:55,847 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:24:55,847 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-27 22:24:55,848 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: stop_status
+2024-03-27 22:24:57,007 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:00,817 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:00,817 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:00,818 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:00,818 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:00,819 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:00,819 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:00,820 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:00,820 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:01,528 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:25:02,828 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:03,529 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:25:07,512 DEBUG   SenderThread:63008 [sender.py:send():378] send: stats
+2024-03-27 22:25:08,513 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:10,847 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:25:10,847 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-27 22:25:10,848 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: stop_status
+2024-03-27 22:25:11,310 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:11,311 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:11,311 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:11,312 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:11,313 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:11,313 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:11,314 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:11,314 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:11,551 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:25:13,555 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:25:14,324 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:19,345 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:22,471 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:22,472 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:22,473 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:22,473 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:22,474 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:22,474 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:22,475 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:22,476 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:22,584 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:25:23,585 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:25:24,481 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:25,847 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:25:25,847 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: stop_status
+2024-03-27 22:25:25,848 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: stop_status
+2024-03-27 22:25:29,997 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:33,691 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:33,692 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:33,692 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:33,693 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:33,694 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:33,694 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:33,695 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:33,695 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:34,629 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:25:34,868 DEBUG   SenderThread:63008 [sender.py:send():378] send: files
+2024-03-27 22:25:34,868 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: partial_history
+2024-03-27 22:25:34,868 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file media/images/Example View_21_4de69dd233bbba59ac52.png with policy now
+2024-03-27 22:25:34,870 DEBUG   SenderThread:63008 [sender.py:send():378] send: history
+2024-03-27 22:25:34,870 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: summary_record
+2024-03-27 22:25:34,871 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:35,314 INFO    wandb-upload_0:63008 [upload_job.py:push():131] Uploaded file /var/folders/3p/x1hjmpx55zbf70vx528h1ph40000gn/T/tmpzhg6y5kkwandb/eaj9axwj-media/images/Example View_21_4de69dd233bbba59ac52.png
+2024-03-27 22:25:35,634 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:25:35,634 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:25:35,634 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/media/images/Example View_21_4de69dd233bbba59ac52.png
+2024-03-27 22:25:35,635 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/media
+2024-03-27 22:25:35,635 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/media/images
+2024-03-27 22:25:35,873 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:36,059 INFO    wandb-upload_0:63008 [upload_job.py:push():131] Uploaded file /var/folders/3p/x1hjmpx55zbf70vx528h1ph40000gn/T/tmpzhg6y5kkwandb/s4uftite-media/images/Example View_21_4de69dd233bbba59ac52.png
+2024-03-27 22:25:37,515 DEBUG   SenderThread:63008 [sender.py:send():378] send: stats
+2024-03-27 22:25:38,428 DEBUG   SenderThread:63008 [sender.py:send():378] send: exit
+2024-03-27 22:25:38,428 INFO    SenderThread:63008 [sender.py:send_exit():585] handling exit code: 1
+2024-03-27 22:25:38,428 INFO    SenderThread:63008 [sender.py:send_exit():587] handling runtime: 120
+2024-03-27 22:25:38,428 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:38,429 INFO    SenderThread:63008 [sender.py:send_exit():593] send defer
+2024-03-27 22:25:38,429 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:38,429 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 0
+2024-03-27 22:25:38,429 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:38,429 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 0
+2024-03-27 22:25:38,429 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 1
+2024-03-27 22:25:38,429 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:38,429 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 1
+2024-03-27 22:25:38,429 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:38,429 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 1
+2024-03-27 22:25:38,429 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 2
+2024-03-27 22:25:38,429 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:38,430 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 2
+2024-03-27 22:25:38,430 INFO    HandlerThread:63008 [system_monitor.py:finish():203] Stopping system monitor
+2024-03-27 22:25:38,430 DEBUG   SystemMonitor:63008 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2024-03-27 22:25:38,430 INFO    HandlerThread:63008 [interfaces.py:finish():202] Joined cpu monitor
+2024-03-27 22:25:38,430 DEBUG   SystemMonitor:63008 [system_monitor.py:_start():183] Publishing last batch of metrics
+2024-03-27 22:25:38,430 INFO    HandlerThread:63008 [interfaces.py:finish():202] Joined disk monitor
+2024-03-27 22:25:38,431 INFO    HandlerThread:63008 [interfaces.py:finish():202] Joined memory monitor
+2024-03-27 22:25:38,431 INFO    HandlerThread:63008 [interfaces.py:finish():202] Joined network monitor
+2024-03-27 22:25:38,431 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:38,431 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 2
+2024-03-27 22:25:38,431 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 3
+2024-03-27 22:25:38,431 DEBUG   SenderThread:63008 [sender.py:send():378] send: stats
+2024-03-27 22:25:38,432 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:38,432 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 3
+2024-03-27 22:25:38,432 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:38,432 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 3
+2024-03-27 22:25:38,432 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 4
+2024-03-27 22:25:38,432 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:38,432 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 4
+2024-03-27 22:25:38,433 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:38,433 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 4
+2024-03-27 22:25:38,433 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 5
+2024-03-27 22:25:38,433 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:38,433 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 5
+2024-03-27 22:25:38,433 DEBUG   SenderThread:63008 [sender.py:send():378] send: summary
+2024-03-27 22:25:38,434 INFO    SenderThread:63008 [sender.py:_save_file():1365] saving file wandb-summary.json with policy end
+2024-03-27 22:25:38,434 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:38,434 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 5
+2024-03-27 22:25:38,434 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 6
+2024-03-27 22:25:38,434 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:38,434 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 6
+2024-03-27 22:25:38,434 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:38,434 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 6
+2024-03-27 22:25:38,434 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 7
+2024-03-27 22:25:38,434 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: status_report
+2024-03-27 22:25:38,435 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:38,435 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 7
+2024-03-27 22:25:38,435 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:38,435 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 7
+2024-03-27 22:25:38,647 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:25:39,429 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: poll_exit
+2024-03-27 22:25:39,648 INFO    Thread-12 :63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:25:40,754 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 8
+2024-03-27 22:25:40,754 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: poll_exit
+2024-03-27 22:25:40,755 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:40,755 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 8
+2024-03-27 22:25:40,755 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:40,755 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 8
+2024-03-27 22:25:40,756 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 9
+2024-03-27 22:25:40,756 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:40,756 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 9
+2024-03-27 22:25:40,756 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:40,756 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 9
+2024-03-27 22:25:40,757 INFO    SenderThread:63008 [dir_watcher.py:finish():358] shutting down directory watcher
+2024-03-27 22:25:41,439 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: poll_exit
+2024-03-27 22:25:41,654 INFO    SenderThread:63008 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:25:41,655 INFO    SenderThread:63008 [dir_watcher.py:finish():388] scan: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files
+2024-03-27 22:25:41,656 INFO    SenderThread:63008 [dir_watcher.py:finish():402] scan save: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/requirements.txt requirements.txt
+2024-03-27 22:25:41,656 INFO    SenderThread:63008 [dir_watcher.py:finish():402] scan save: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log output.log
+2024-03-27 22:25:41,660 INFO    SenderThread:63008 [dir_watcher.py:finish():402] scan save: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/config.yaml config.yaml
+2024-03-27 22:25:41,660 INFO    SenderThread:63008 [dir_watcher.py:finish():402] scan save: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json wandb-summary.json
+2024-03-27 22:25:41,663 INFO    SenderThread:63008 [dir_watcher.py:finish():402] scan save: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/conda-environment.yaml conda-environment.yaml
+2024-03-27 22:25:41,663 INFO    SenderThread:63008 [dir_watcher.py:finish():402] scan save: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-metadata.json wandb-metadata.json
+2024-03-27 22:25:41,671 INFO    SenderThread:63008 [dir_watcher.py:finish():402] scan save: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/media/images/Example View_21_4de69dd233bbba59ac52.png media/images/Example View_21_4de69dd233bbba59ac52.png
+2024-03-27 22:25:41,671 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 10
+2024-03-27 22:25:41,672 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: poll_exit
+2024-03-27 22:25:41,672 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:41,672 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 10
+2024-03-27 22:25:41,673 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:41,674 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 10
+2024-03-27 22:25:41,674 INFO    SenderThread:63008 [file_pusher.py:finish():172] shutting down file pusher
+2024-03-27 22:25:41,975 INFO    wandb-upload_2:63008 [upload_job.py:push():131] Uploaded file /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/config.yaml
+2024-03-27 22:25:42,086 INFO    wandb-upload_0:63008 [upload_job.py:push():131] Uploaded file /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/requirements.txt
+2024-03-27 22:25:42,236 INFO    wandb-upload_3:63008 [upload_job.py:push():131] Uploaded file /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/wandb-summary.json
+2024-03-27 22:25:42,243 INFO    wandb-upload_1:63008 [upload_job.py:push():131] Uploaded file /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/output.log
+2024-03-27 22:25:42,257 INFO    wandb-upload_4:63008 [upload_job.py:push():131] Uploaded file /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/files/conda-environment.yaml
+2024-03-27 22:25:42,443 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: poll_exit
+2024-03-27 22:25:42,444 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: poll_exit
+2024-03-27 22:25:42,462 INFO    Thread-11 (_thread_body):63008 [sender.py:transition_state():613] send defer: 11
+2024-03-27 22:25:42,463 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:42,464 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 11
+2024-03-27 22:25:42,465 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:42,465 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 11
+2024-03-27 22:25:42,465 INFO    SenderThread:63008 [file_pusher.py:join():178] waiting for file pusher
+2024-03-27 22:25:42,466 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 12
+2024-03-27 22:25:42,467 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:42,467 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 12
+2024-03-27 22:25:42,467 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:42,467 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 12
+2024-03-27 22:25:42,467 INFO    SenderThread:63008 [file_stream.py:finish():595] file stream finish called
+2024-03-27 22:25:42,676 INFO    SenderThread:63008 [file_stream.py:finish():599] file stream finish is done
+2024-03-27 22:25:42,676 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 13
+2024-03-27 22:25:42,676 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:42,677 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 13
+2024-03-27 22:25:42,677 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:42,677 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 13
+2024-03-27 22:25:42,678 INFO    SenderThread:63008 [sender.py:transition_state():613] send defer: 14
+2024-03-27 22:25:42,678 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: defer
+2024-03-27 22:25:42,678 INFO    HandlerThread:63008 [handler.py:handle_request_defer():172] handle defer: 14
+2024-03-27 22:25:42,679 DEBUG   SenderThread:63008 [sender.py:send():378] send: final
+2024-03-27 22:25:42,679 DEBUG   SenderThread:63008 [sender.py:send():378] send: footer
+2024-03-27 22:25:42,679 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: defer
+2024-03-27 22:25:42,679 INFO    SenderThread:63008 [sender.py:send_request_defer():609] handle sender defer: 14
+2024-03-27 22:25:42,680 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: poll_exit
+2024-03-27 22:25:42,681 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: poll_exit
+2024-03-27 22:25:42,682 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: poll_exit
+2024-03-27 22:25:42,682 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: poll_exit
+2024-03-27 22:25:42,683 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: server_info
+2024-03-27 22:25:42,683 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: server_info
+2024-03-27 22:25:42,685 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: get_summary
+2024-03-27 22:25:42,686 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: sampled_history
+2024-03-27 22:25:42,688 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: internal_messages
+2024-03-27 22:25:42,689 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: job_info
+2024-03-27 22:25:42,751 DEBUG   SenderThread:63008 [sender.py:send_request():405] send_request: job_info
+2024-03-27 22:25:42,752 INFO    MainThread:63008 [wandb_run.py:_footer_history_summary_info():3851] rendering history
+2024-03-27 22:25:42,752 INFO    MainThread:63008 [wandb_run.py:_footer_history_summary_info():3883] rendering summary
+2024-03-27 22:25:42,753 INFO    MainThread:63008 [wandb_run.py:_footer_sync_info():3810] logging synced files
+2024-03-27 22:25:42,754 DEBUG   HandlerThread:63008 [handler.py:handle_request():146] handle_request: shutdown
+2024-03-27 22:25:42,754 INFO    HandlerThread:63008 [handler.py:finish():869] shutting down handler
+2024-03-27 22:25:43,690 INFO    WriterThread:63008 [datastore.py:close():296] close: /Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/wandb/run-20240327_222336-imclt7zl/run-imclt7zl.wandb
+2024-03-27 22:25:43,755 INFO    SenderThread:63008 [sender.py:finish():1521] shutting down sender
+2024-03-27 22:25:43,756 INFO    SenderThread:63008 [file_pusher.py:finish():172] shutting down file pusher
+2024-03-27 22:25:43,756 INFO    SenderThread:63008 [file_pusher.py:join():178] waiting for file pusher

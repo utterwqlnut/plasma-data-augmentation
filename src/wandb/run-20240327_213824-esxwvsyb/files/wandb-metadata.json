@@ -1,0 +1,45 @@
+{
+    "os": "macOS-10.16-x86_64-i386-64bit",
+    "python": "3.10.13",
+    "heartbeatAt": "2024-03-28T01:38:25.378139",
+    "startedAt": "2024-03-28T01:38:24.265413",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation/src/main.py",
+    "codePathLocal": "main.py",
+    "codePath": "src/main.py",
+    "git": {
+        "remote": "git@github.com:utterwqlnut/plasma-data-augmentation.git",
+        "commit": "836a62887f25405716b5c5d2bcc4ab4b5d8402ac"
+    },
+    "email": "dhruva.chayapathy@gmail.com",
+    "root": "/Users/dhruvachayapathy/personal/research/mit-research/plasma-data-augmentation",
+    "host": "Dhruvas-MacBook-Pro.local",
+    "username": "dhruvachayapathy",
+    "executable": "/usr/local/Caskroom/miniconda/base/envs/plasma-aug/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 2400,
+        "min": 2400,
+        "max": 2400
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2400,
+            "min": 2400,
+            "max": 2400
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 393.9501724243164,
+            "used": 21.75124740600586
+        }
+    },
+    "memory": {
+        "total": 16.0
+    }
+}
