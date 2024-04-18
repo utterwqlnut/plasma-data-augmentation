@@ -1,5 +1,5 @@
 from data import PlasmaDataset, generate_datasets, post_hoc_collate_fn, viewmaker_collate_fn, distort_dataset
-from models import PlasmaLSTM, PlasmaViewEncoderLSTM, TimeSeriesViewMaker
+from models import PlasmaLSTM, PlasmaViewEncoderLSTM, DecompTimeSeriesViewMaker
 import os
 from torch.utils.data import DataLoader
 import torch
@@ -8,6 +8,8 @@ from eval import compute_metrics, plot_view, compute_metrics_after_training
 from train import train_post_hoc, ViewMakerTrainer
 import arg_parsing
 import utils
+torch.manual_seed(42)
+torch.use_deterministic_algorithms(True)
 
 args, arg_keys = arg_parsing.get_args()
 
@@ -21,7 +23,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Get Dataset
 file_name = 'Full_HDL_dataset_unnormalized_no_nan_column_names_w_shot.pickle'
-train_dataset, test_dataset, val_dataset = generate_datasets(file_name,0.8,0.1,0.1,included_machines=included_machines, balance=balance, device=device)
+train_dataset, test_dataset, val_dataset = generate_datasets(file_name,0.1,0.1,included_machines=included_machines, new_machine='cmod',case=case, balance=balance, device=device)
 
 activations = {
     'relu': torch.nn.ReLU(),
@@ -34,7 +36,7 @@ viewmaker_args = {
     "n_dim": 12,
     "n_layers": viewmaker_n_layers,
     "activation": activations[viewmaker_activation],
-    "distortion_budget": viewmaker_distortion_budget,
+    "default_distortion_budget": training_distortion_budget,
     "hidden_dim": viewmaker_hidden_dim,
     "layer_type": viewmaker_layer_type,
     "n_head": viewmaker_n_head,
@@ -43,10 +45,11 @@ encoder_args = {
     "n_input": 12,
     "n_layers": encoder_n_layers,
     "h_size": encoder_hidden_dim,
+    "out_size": encoder_out_size,
 }
 
 
-viewmaker = TimeSeriesViewMaker(**viewmaker_args).to(device)
+viewmaker = DecompTimeSeriesViewMaker(**viewmaker_args).to(device)
 
 encoder = PlasmaViewEncoderLSTM(**encoder_args).to(device)
 
@@ -68,24 +71,40 @@ utils.set_up_wandb(
         training_args=viewmaker_trainer_args, seed=42, parsed_args=arg_values)
 
 trainer = ViewMakerTrainer(**viewmaker_trainer_args)
-#trainer.train(viewmaker_num_epochs)
+trainer.train(viewmaker_num_epochs)
+
 
 # Generate test views
 plot_view(viewmaker, test_dataset[0]['inputs_embeds'].unsqueeze(0))
 
 # Generate Distorted Dataset
-distort_dataset(train_dataset, viewmaker, distort_d_reps, distort_nd_reps)
+#distorted_dataset = distort_dataset(train_dataset, viewmaker, distort_d_reps, distort_nd_reps)
 
-# Train an Post Hoc LSTM
-train_dataloader = DataLoader(train_dataset, batch_size=post_hoc_batch_size, shuffle=True, collate_fn=post_hoc_collate_fn)
-test_dataloader = DataLoader(test_dataset, batch_size=post_hoc_batch_size, shuffle=True, collate_fn=post_hoc_collate_fn)
-val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle=True,collate_fn=post_hoc_collate_fn)
+# Train an Post Hoc LSTM with No Augmentation
+print('Beginning Post Hoc Training with No Augmentations')
+
+train_dataloader = DataLoader(train_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
+test_dataloader = DataLoader(test_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
+val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle=False,collate_fn=post_hoc_collate_fn)
 
 
 model = PlasmaLSTM(12,post_hoc_n_layers,post_hoc_h_size).to(device)
 adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
 loss_fn = torch.nn.BCELoss()
-save_metric = 'accuracy'
 
-best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=test_dataloader, model=model,optim=adam,loss_fn=loss_fn, save_metric=save_metric, num_epochs=post_hoc_num_epochs)
-compute_metrics_after_training(best_model, test_dataset)
+best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=val_dataloader, model=model, viewmaker=viewmaker, optim=adam,loss_fn=loss_fn, save_metric=post_hoc_save_metric, num_epochs=post_hoc_num_epochs, viewmaker_aug=False, max_distortion_budget=max_distortion_budget, varied_distortion_budget=varied_distortion_budget)
+compute_metrics_after_training(best_model, test_dataset, prefix="No Aug ")
+
+# Train an Post Hoc LSTM with Augmentation
+print('Beginning Post Hoc Training with Augmentations')
+
+train_dataloader = DataLoader(train_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
+test_dataloader = DataLoader(test_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
+val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle=False,collate_fn=post_hoc_collate_fn)
+
+model = PlasmaLSTM(12,post_hoc_n_layers,post_hoc_h_size).to(device)
+adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
+loss_fn = torch.nn.BCELoss()
+
+best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=val_dataloader, model=model, viewmaker=viewmaker, optim=adam,loss_fn=loss_fn, save_metric=post_hoc_save_metric, num_epochs=post_hoc_num_epochs, viewmaker_aug=True, max_distortion_budget=max_distortion_budget, varied_distortion_budget=varied_distortion_budget)
+compute_metrics_after_training(best_model, test_dataset, prefix="Aug ")

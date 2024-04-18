@@ -5,8 +5,11 @@ import torch
 import sys
 import os
 import pickle
-from sklearn.preprocessing import RobustScaler
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import normalize
 import random
+import copy
+random.seed(24)
 
 class PlasmaDataset(Dataset):
 
@@ -16,16 +19,17 @@ class PlasmaDataset(Dataset):
         self.machines = []
         self.inputs_embeds = []
         self.predict_inputs_embeds = []
+        self.device = device
 
         for i in range(len(shot_data)):
             item = shot_data[i]
             if len(item['data'])<=cutoff_steps:
                 continue
 
-            self.labels.append(torch.tensor(item['label']).to(device))
+            self.labels.append(torch.tensor(item['label']))
             self.machines.append(item['machine'])
-            self.inputs_embeds.append(torch.tensor(item['data'].values,dtype=torch.float32).to(device))
-            self.predict_inputs_embeds.append(torch.tensor(item['data'].values[:-cutoff_steps],dtype=torch.float32).to(device))
+            self.inputs_embeds.append(torch.tensor(item['data'].values,dtype=torch.float32))
+            self.predict_inputs_embeds.append(torch.tensor(item['data'].values[:-cutoff_steps],dtype=torch.float32))
 
 
     def __getitem__(self, index):
@@ -43,37 +47,109 @@ class PlasmaDataset(Dataset):
 
         return data
 
-def generate_datasets(file_name: str, train_size: float, test_size: float, val_size: float, device, included_machines=['cmod','d3d','east'], balance=False):
+    def scale(self):
+        combined_full = torch.cat(self.inputs_embeds)
+        combined_predict = torch.cat(self.predict_inputs_embeds)
+
+        scaler = StandardScaler().fit(combined_full)
+
+        with torch.no_grad():
+            for i in range(len(self.inputs_embeds)):
+                self.inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.inputs_embeds[i])),dtype=torch.float32)
+                self.predict_inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.predict_inputs_embeds[i])),dtype=torch.float32)
+
+        return scaler
+    
+    def scale_w_scaler(self, scaler):
+        with torch.no_grad():
+            for i in range(len(self.inputs_embeds)):
+                self.inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.inputs_embeds[i])),dtype=torch.float32)
+                self.predict_inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.predict_inputs_embeds[i])),dtype=torch.float32)
+
+    def move_to_device(self):
+        for i in range(len(self.inputs_embeds)):
+            self.inputs_embeds[i]=self.inputs_embeds[i].to(self.device)
+            self.predict_inputs_embeds[i]=self.predict_inputs_embeds[i].to(self.device)
+            self.labels[i]=self.labels[i].to(self.device)
+
+    def get_machine_counts(self):
+        cmod_count = 0
+        d3d_count = 0
+        east_count = 0
+
+        for i in range(len(self.machines)):
+            if self.machines[i] == 'cmod':
+                cmod_count+=1
+            elif self.machines[i] == 'd3d':
+                d3d_count+=1
+            else:
+                east_count+=1
+            
+        return cmod_count, d3d_count, east_count
+
+def generate_datasets(file_name: str, test_size: float, val_size: float, device, included_machines=['cmod','d3d','east'], new_machine='cmod', case=4, balance=False):
     data = PlasmaDataset.load_file(os.path.dirname(__file__)+'/../data/'+file_name)
 
     # Convert to list of dicts
+    new_data = []
+    old_data = []
+
     shot_data = []
     for shot in data.values():
         if shot['machine'] in included_machines:
-            shot_data.append(shot)
+            if shot['machine'] == new_machine:
+                new_data.append(shot)
+            else:
+                old_data.append(shot)
 
-    random.shuffle(shot_data)
+    random.shuffle(new_data)
+    random.shuffle(old_data)
     
-    # Get datasets
-    if not balance:
-        train_dataset = PlasmaDataset(
-            shot_data=shot_data[:int(train_size*len(shot_data))],
-            device=device
-        )
+    test_dataset = new_data[:int(len(new_data)*test_size)]
+    new_data = new_data[int(len(new_data)*(test_size+val_size)):]
+
+    if case == 1:
+        train_dataset = old_data
+    elif case == 2:
+        train_dataset = new_data[:20]+old_data
+    elif case == 3:
+        train_dataset = new_data+old_data
     else:
-        balanced_data = balance_data(shot_data[:int(train_size*len(shot_data))])
-        train_dataset = PlasmaDataset(
-            shot_data=balanced_data,
-            device=device
-        )
+        train_dataset = new_data
+
+
+    if balance:
+        train_dataset = balance_data(train_dataset)
+
+    random.shuffle(train_dataset)
+
+    val_dataset = train_dataset[-int(len(new_data)*(val_size)):]
+    for shot in val_dataset:
+        print(shot['label'])
+    train_dataset = train_dataset[:-int(len(new_data)*(val_size))]
+
+    # Get datasets
+
+    train_dataset = PlasmaDataset(
+        shot_data=train_dataset[:100],
+        device=device
+    )
+
     test_dataset = PlasmaDataset(
-        shot_data=shot_data[len(train_dataset):len(train_dataset)+int(test_size*len(shot_data))],
+        shot_data=test_dataset,
         device=device
     )
     val_dataset = PlasmaDataset(
-        shot_data=shot_data[len(test_dataset):],
+        shot_data=val_dataset,
         device=device
     )
+    scaler = train_dataset.scale()
+    test_dataset.scale_w_scaler(scaler)
+    val_dataset.scale_w_scaler(scaler)
+
+    train_dataset.move_to_device()
+    test_dataset.move_to_device()
+    val_dataset.move_to_device()
 
     return train_dataset, test_dataset, val_dataset
 
@@ -103,6 +179,7 @@ def post_hoc_collate_fn(dataset):
         [df["predict_inputs_embeds"].to(dtype=torch.float32) for df in dataset],
         padding_value=-100,
         batch_first=True)
+    
     output['labels'] = torch.stack([df['label'].to(dtype=torch.float32) for df in dataset]).unsqueeze(-1)
 
     return output
@@ -111,7 +188,7 @@ def viewmaker_collate_fn(dataset):
     output = {}
 
     output['inputs_embeds'] = pad_sequence(
-        [df["inputs_embeds"].to(dtype=torch.float32) for df in dataset],
+        [df["predict_inputs_embeds"].to(dtype=torch.float32) for df in dataset],
         padding_value=-100,
         batch_first=True)
     output['labels'] = torch.stack([df['label'].to(dtype=torch.float32) for df in dataset]).unsqueeze(-1)
@@ -119,26 +196,30 @@ def viewmaker_collate_fn(dataset):
     return output
 
 def distort_dataset(dataset, model, d_reps, nd_reps):
-    new_predict_inputs_embeds = []
-    new_inputs_embeds = []
-    new_labels = []
-    new_machines = []
-    for i, data in enumerate(dataset.predict_inputs_embeds):
-        if dataset.labels[i] == 1:
-            for j in range(d_reps):
-                new_predict_inputs_embeds.append(model(data.unsqueeze(0)).squeeze())
-                new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze())
-                new_labels.append(dataset.labels[i])
-                new_machines.append(dataset.machines[i])
-                
-        else:
-            for j in range(nd_reps):
-                new_predict_inputs_embeds.append(model(data.unsqueeze(0)).squeeze())
-                new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze())
-                new_labels.append(dataset.labels[i])
-                new_machines.append(dataset.machines[i])
-    
-    dataset.predict_inputs_embeds = new_predict_inputs_embeds
-    dataset.inputs_embeds = new_inputs_embeds
-    dataset.labels = new_labels
-    dataset.machines = new_machines
+    with torch.no_grad():
+        new_predict_inputs_embeds = []
+        new_inputs_embeds = []
+        new_labels = []
+        new_machines = []
+        for i, data in enumerate(dataset.predict_inputs_embeds):
+            if dataset.labels[i] == 1:
+                for j in range(d_reps):
+                    new_predict_inputs_embeds.append(model(data.unsqueeze(0)).squeeze())
+                    new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0), specified_distortion_budget=np.rand()).squeeze())
+                    new_labels.append(dataset.labels[i])
+                    new_machines.append(dataset.machines[i])
+                    
+            else:
+                for j in range(nd_reps):
+                    new_predict_inputs_embeds.append(model(data.unsqueeze(0)).squeeze())
+                    new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze())
+                    new_labels.append(dataset.labels[i])
+                    new_machines.append(dataset.machines[i])
+
+        new_dataset = copy.deepcopy(dataset)
+        new_dataset.predict_inputs_embeds = new_predict_inputs_embeds
+        new_dataset.inputs_embeds = new_inputs_embeds
+        new_dataset.labels = new_labels
+        new_dataset.machines = new_machines
+
+        return new_dataset

@@ -6,10 +6,10 @@ import wandb
 
 def compute_metrics(out, labels):
     binary_out = np.round(out.detach().numpy())
-    
+
     return accuracy_score(labels, binary_out), f1_score(labels, binary_out), roc_auc_score(labels, binary_out)
 
-def plot_view(model, input):
+def plot_view(model, input, title='Example Test View'):
     input = input.to(torch.float32)
 
     fig, ax = plt.subplots(4,3)
@@ -20,9 +20,9 @@ def plot_view(model, input):
         ax[idx1][idx2].plot(np.transpose(model(input).squeeze().detach().numpy()[:,i]), label='View')
         ax[idx1][idx2].legend()
 
-    wandb.log({"Example View":wandb.Image(fig)})
+    wandb.log({title:wandb.Image(fig)})
 
-def compute_metrics_after_training(model, test_dataset):
+def compute_metrics_after_training(model, test_dataset, prefix):
     out = []
     labels = []
     for sample in test_dataset:
@@ -30,4 +30,4 @@ def compute_metrics_after_training(model, test_dataset):
         labels.append(sample['label'])
     
     accuracy, f1, auc = compute_metrics(torch.stack(out),torch.stack(labels))
-    wandb.log({"Post Hoc Accuracy": accuracy, "Post Hoc F1": f1, "Post Hoc AUC": auc})
+    wandb.log({prefix+"Post Hoc Accuracy": accuracy, prefix+"Post Hoc F1": f1, prefix+"Post Hoc AUC": auc})
