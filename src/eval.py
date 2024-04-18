@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import wandb
 
 def compute_metrics(out, labels):
-    binary_out = np.round(out.detach().numpy())
+    labels = labels.cpu().detach().numpy()
+    binary_out = np.round(out.cpu().detach().numpy())
 
     return accuracy_score(labels, binary_out), f1_score(labels, binary_out), roc_auc_score(labels, binary_out)
 
@@ -16,8 +17,8 @@ def plot_view(model, input, title='Example Test View'):
     for i in range(12):
         idx1 = i%4
         idx2 = i//4
-        ax[idx1][idx2].plot(np.transpose(input.squeeze().detach().numpy()[:,i]), label='Original')
-        ax[idx1][idx2].plot(np.transpose(model(input).squeeze().detach().numpy()[:,i]), label='View')
+        ax[idx1][idx2].plot(np.transpose(input.squeeze().cpu().detach().numpy()[:,i]), label='Original')
+        ax[idx1][idx2].plot(np.transpose(model(input).squeeze().cpu().detach().numpy()[:,i]), label='View')
         ax[idx1][idx2].legend()
 
     wandb.log({title:wandb.Image(fig)})

@@ -2,7 +2,6 @@ import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import torch
 import numpy as np
-torch.use_deterministic_algorithms(True)
 
 class PlasmaLSTM(nn.Module):
     # LSTM for binary classification
@@ -77,7 +76,7 @@ class TimeSeriesViewMaker(nn.Module):
             )
 
     def add_noise_channel(self, x):
-        return torch.cat((x,torch.rand(x[:,:,0].unsqueeze(-1).shape)),dim=-1)
+        return torch.cat((x,torch.rand(x[:,:,0].unsqueeze(-1).shape, device=x.device)),dim=-1)
     
     def get_delta(self, y_pixels, specified_distortion_budget=None, eps=1e-4):
         '''Constrains the input perturbation by projecting it onto an L1 sphere taken'''
@@ -183,7 +182,7 @@ class DecompTimeSeriesViewMaker(nn.Module):
             )
 
     def add_noise_channel(self, x):
-        return torch.cat((x,torch.rand(x[:,:,0].unsqueeze(-1).shape)),dim=-1)
+        return torch.cat((x,torch.rand(x[:,:,0].unsqueeze(-1).shape, device=x.device)),dim=-1)
     
     def get_delta(self, y_pixels, specified_distortion_budget=None, eps=1e-4):
         '''Constrains the input perturbation by projecting it onto an L1 sphere taken'''

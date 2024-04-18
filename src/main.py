@@ -8,8 +8,8 @@ from eval import compute_metrics, plot_view, compute_metrics_after_training
 from train import train_post_hoc, ViewMakerTrainer
 import arg_parsing
 import utils
+
 torch.manual_seed(42)
-torch.use_deterministic_algorithms(True)
 
 args, arg_keys = arg_parsing.get_args()
 

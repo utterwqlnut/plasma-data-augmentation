@@ -10,7 +10,6 @@ import numpy as np
 from eval import plot_view
 
 torch.manual_seed(42)
-torch.use_deterministic_algorithms(True)
 
 def train_post_hoc(train_dataloader, val_dataloader, optim, loss_fn, model, viewmaker, viewmaker_aug, varied_distortion_budget, max_distortion_budget, save_metric, num_epochs):
     if viewmaker_aug:
@@ -137,17 +136,17 @@ class ViewMakerTrainer():
                 view1 = self.viewmaker(x1)
                 view2 = self.viewmaker(x2)
 
-                encoder_loss, _ = AdversarialSimCLRLoss(self.encoder(view1.detach()), self.encoder(view2.detach()), self.t, self.v_loss_weight).get_loss()
-
-                self.encoder.zero_grad()
-                encoder_loss.backward()
-                self.encoder_optim.step()
-
                 _, viewmaker_loss = AdversarialSimCLRLoss(self.encoder(view1), self.encoder(view2), self.t, self.v_loss_weight).get_loss()
 
                 self.viewmaker.zero_grad()
                 viewmaker_loss.backward()
                 self.viewmaker_optim.step()
+
+                encoder_loss, _ = AdversarialSimCLRLoss(self.encoder(view1), self.encoder(view2), self.t, self.v_loss_weight).get_loss()
+
+                self.encoder.zero_grad()
+                encoder_loss.backward()
+                self.encoder_optim.step()
 
                 train_running_e_loss += encoder_loss.item()
                 train_running_v_loss += viewmaker_loss.item()

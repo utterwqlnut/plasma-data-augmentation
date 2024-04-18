@@ -9,6 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import normalize
 import random
 import copy
+
 random.seed(24)
 
 class PlasmaDataset(Dataset):
@@ -124,8 +125,6 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
     random.shuffle(train_dataset)
 
     val_dataset = train_dataset[-int(len(new_data)*(val_size)):]
-    for shot in val_dataset:
-        print(shot['label'])
     train_dataset = train_dataset[:-int(len(new_data)*(val_size))]
 
     # Get datasets
