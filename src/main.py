@@ -89,6 +89,8 @@ val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle
 
 
 model = PlasmaLSTM(12,post_hoc_n_layers,post_hoc_h_size).to(device)
+original_model = copy.deepcopy(model)
+
 adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
 loss_fn = torch.nn.BCELoss()
 
@@ -98,11 +100,7 @@ compute_metrics_after_training(best_model, test_dataset, prefix="No Aug ")
 # Train an Post Hoc LSTM with Augmentation
 print('Beginning Post Hoc Training with Augmentations')
 
-train_dataloader = DataLoader(train_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
-test_dataloader = DataLoader(test_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
-val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle=False,collate_fn=post_hoc_collate_fn)
-
-model = PlasmaLSTM(12,post_hoc_n_layers,post_hoc_h_size).to(device)
+model = original_model
 adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
 loss_fn = torch.nn.BCELoss()
 
