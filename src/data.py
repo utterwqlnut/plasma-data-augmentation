@@ -107,7 +107,7 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
     random.shuffle(old_data)
     
     test_dataset = new_data[:int(len(new_data)*test_size)]
-    new_data = new_data[int(len(new_data)*(test_size+val_size)):]
+    new_data = new_data[int(len(new_data)*(test_size)):]
 
     if case == 1:
         train_dataset = old_data

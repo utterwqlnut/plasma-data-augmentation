@@ -8,6 +8,7 @@ from eval import compute_metrics, plot_view, compute_metrics_after_training
 from train import train_post_hoc, ViewMakerTrainer
 import arg_parsing
 import utils
+from post_hoc import compare_aug_no_aug
 
 torch.manual_seed(42)
 
@@ -80,29 +81,14 @@ plot_view(viewmaker, test_dataset[0]['inputs_embeds'].unsqueeze(0))
 # Generate Distorted Dataset
 #distorted_dataset = distort_dataset(train_dataset, viewmaker, distort_d_reps, distort_nd_reps)
 
-# Train an Post Hoc LSTM with No Augmentation
-print('Beginning Post Hoc Training with No Augmentations')
-
-train_dataloader = DataLoader(train_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
-test_dataloader = DataLoader(test_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
-val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle=False,collate_fn=post_hoc_collate_fn)
-
-# Simplified version of moddel
-model = LSTMFormer(n_layers=1, embedding_dim=24, n_inner=48).to(device)
-original_model = copy.deepcopy(model)
-
-adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
-loss_fn = torch.nn.BCELoss()
-
-best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=val_dataloader, model=model, viewmaker=viewmaker, optim=adam,loss_fn=loss_fn, save_metric=post_hoc_save_metric, num_epochs=post_hoc_num_epochs, viewmaker_aug=False, max_distortion_budget=max_distortion_budget, varied_distortion_budget=varied_distortion_budget)
-compute_metrics_after_training(best_model, test_dataset, prefix="No Aug ")
-
-# Train an Post Hoc LSTM with Augmentation
-print('Beginning Post Hoc Training with Augmentations')
-
-model = original_model
-adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
-loss_fn = torch.nn.BCELoss()
-
-best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=val_dataloader, model=model, viewmaker=viewmaker, optim=adam,loss_fn=loss_fn, save_metric=post_hoc_save_metric, num_epochs=post_hoc_num_epochs, viewmaker_aug=True, max_distortion_budget=max_distortion_budget, varied_distortion_budget=varied_distortion_budget)
-compute_metrics_after_training(best_model, test_dataset, prefix="Aug ")
+compare_aug_no_aug(train_dataset=train_dataset, 
+                   test_dataset=test_dataset, 
+                   val_dataset=val_dataset,
+                   post_hoc_batch_size=post_hoc_batch_size,
+                   post_hoc_lr=post_hoc_lr,
+                   post_hoc_num_epochs=post_hoc_num_epochs,
+                   post_hoc_save_metric=post_hoc_save_metric,
+                   max_distortion_budget=max_distortion_budget,
+                   varied_distortion_budget=varied_distortion_budget,
+                   viewmaker=viewmaker,
+                   device=device)
