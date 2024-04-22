@@ -4,6 +4,8 @@ import torch
 import matplotlib.pyplot as plt
 import wandb
 
+torch.manual_seed(42)
+
 def compute_metrics(out, labels):
     labels = labels.cpu().detach().numpy()
     binary_out = np.round(out.cpu().detach().numpy())

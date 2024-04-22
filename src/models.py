@@ -2,6 +2,7 @@ import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import torch
 import numpy as np
+torch.manual_seed(42)
 
 class PlasmaLSTM(nn.Module):
     # LSTM for binary classification
@@ -33,12 +34,11 @@ class PlasmaViewEncoderLSTM(nn.Module):
         self.out = nn.Sequential(nn.LayerNorm(h_size),nn.ReLU(), nn.Linear(h_size,out_size),nn.LayerNorm(out_size)) 
     
     def forward(self, x):
-        with torch.no_grad():
-            lengths = [len(x[i])-len(torch.where(x[i]==-100)[0])/self.n_input for i in range(x.shape[0])]
-            x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
+        lengths = [len(x[i])-len(torch.where(x[i]==-100)[0])/self.n_input for i in range(x.shape[0])]
+        x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
 
-            x, hidden = self.lstm(x)
-            x, lengths = pad_packed_sequence(x, batch_first=True)
+        x, hidden = self.lstm(x)
+        x, lengths = pad_packed_sequence(x, batch_first=True)
 
         mean = x.mean(dim=1)
         out = self.out(mean)

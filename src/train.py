@@ -136,17 +136,17 @@ class ViewMakerTrainer():
                 view1 = self.viewmaker(x1)
                 view2 = self.viewmaker(x2)
 
+                encoder_loss, _ = AdversarialSimCLRLoss(self.encoder(view1.detach()), self.encoder(view2.detach()), self.t, self.v_loss_weight).get_loss()
+
+                self.encoder.zero_grad()
+                encoder_loss.backward()
+                self.encoder_optim.step()
+
                 _, viewmaker_loss = AdversarialSimCLRLoss(self.encoder(view1), self.encoder(view2), self.t, self.v_loss_weight).get_loss()
 
                 self.viewmaker.zero_grad()
                 viewmaker_loss.backward()
                 self.viewmaker_optim.step()
-
-                encoder_loss, _ = AdversarialSimCLRLoss(self.encoder(view1), self.encoder(view2), self.t, self.v_loss_weight).get_loss()
-
-                self.encoder.zero_grad()
-                encoder_loss.backward()
-                self.encoder_optim.step()
 
                 train_running_e_loss += encoder_loss.item()
                 train_running_v_loss += viewmaker_loss.item()
