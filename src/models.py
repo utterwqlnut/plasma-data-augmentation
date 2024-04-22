@@ -4,6 +4,87 @@ import torch
 import numpy as np
 torch.manual_seed(42)
 
+class LSTMFormer(nn.Module):
+    def __init__(self, 
+                 buffer_size=5,
+                 input_size=12,
+                 embedding_dim=128,
+                 n_lstm_layers=1,
+                 lstm_dropout=0.26251692966017,
+                 bidirectional=False,
+                 n_head=2,
+                 n_inner=512,
+                 transformer_dropout=0.16762577671904463,
+                 n_layers=4,
+                 ):
+            
+            super().__init__()
+            self.input_size = input_size
+
+            self.buffer_size = buffer_size
+
+            self.buffer = [0.1]*buffer_size
+
+            self.lstm = nn.LSTM(input_size, embedding_dim, n_lstm_layers,dropout=lstm_dropout,bidirectional=bidirectional, batch_first=True)
+
+            self.norm = nn.LayerNorm(embedding_dim)
+
+            self.encoder_layer = nn.TransformerEncoderLayer(d_model=embedding_dim, nhead=n_head, dim_feedforward=n_inner, batch_first=True, dropout=transformer_dropout)
+            
+            self.encoder = nn.TransformerEncoder(self.encoder_layer, n_layers)
+
+            self.fc = nn.Sequential(nn.Linear(embedding_dim,1),nn.Sigmoid())
+
+            self.fc_pretrain = nn.Linear(embedding_dim, input_size)
+
+            self.mode = "normal"
+
+    def forward(self,
+            inputs_embeds,
+            plot_attentions=False, 
+            need_buffer=False,
+            **kwargs):
+
+        # Learnable positional encodings LSTM style
+        x = inputs_embeds.float()
+
+        lengths = [len(inputs_embeds[i])-len(torch.where(inputs_embeds[i]==-100)[0])/self.input_size for i in range(inputs_embeds.shape[0])]
+
+        x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
+
+        x, hidden = self.lstm(x)
+        x, lengths = pad_packed_sequence(x, batch_first=True)
+
+        x = self.norm(x)
+
+        # Encoder 
+        if plot_attentions:
+            tgt_mask = nn.Transformer.generate_square_subsequent_mask(x.size(1),device=self.device)
+    
+            att_w = []
+            for i in range(len(self.encoder.layers)):
+                att_w.append(self.encoder.layers[i].self_attn(x,x,x,attn_mask=tgt_mask,need_weights=True)[1])
+            
+            att_w = torch.stack(att_w)
+        else:
+            att_w = None
+
+        x = self.encoder(x)
+
+        if self.mode == "normal":
+            x = self.fc(x.mean(dim=1))
+        else:
+            x = self.fc_pretrain(x)
+
+        if need_buffer:
+            self.buffer = self.buffer[1:]
+            self.buffer.append(x)
+            x = sum(self.buffer)/self.buffer_size
+
+        return x
+    def reset_buffer(self):
+        self.buffer = [0.1]*self.buffer_size
+
 class PlasmaLSTM(nn.Module):
     # LSTM for binary classification
     def __init__(self, n_input, n_layers, h_size):

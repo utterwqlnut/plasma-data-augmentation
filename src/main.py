@@ -1,5 +1,5 @@
 from data import PlasmaDataset, generate_datasets, post_hoc_collate_fn, viewmaker_collate_fn, distort_dataset
-from models import PlasmaLSTM, PlasmaViewEncoderLSTM, DecompTimeSeriesViewMaker
+from models import PlasmaLSTM, PlasmaViewEncoderLSTM, DecompTimeSeriesViewMaker, LSTMFormer
 import os
 from torch.utils.data import DataLoader
 import torch
@@ -88,7 +88,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=post_hoc_batch_size, shuff
 val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle=False,collate_fn=post_hoc_collate_fn)
 
 
-model = PlasmaLSTM(12,post_hoc_n_layers,post_hoc_h_size).to(device)
+model = LSTMFormer(n_layers=1, embedding_dim=24, n_inner=48).to(device)
 original_model = copy.deepcopy(model)
 
 adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
