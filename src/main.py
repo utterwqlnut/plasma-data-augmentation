@@ -87,7 +87,7 @@ train_dataloader = DataLoader(train_dataset, batch_size=post_hoc_batch_size, shu
 test_dataloader = DataLoader(test_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
 val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle=False,collate_fn=post_hoc_collate_fn)
 
-
+# Simplified version of moddel
 model = LSTMFormer(n_layers=1, embedding_dim=24, n_inner=48).to(device)
 original_model = copy.deepcopy(model)
 
