@@ -118,14 +118,13 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
     else:
         train_dataset = new_data
 
-
-    if balance:
-        train_dataset = balance_data(train_dataset)
-
     random.shuffle(train_dataset)
 
     val_dataset = train_dataset[-int(len(new_data)*(val_size)):]
     train_dataset = train_dataset[:-int(len(new_data)*(val_size))]
+
+    if balance:
+        train_dataset = balance_data(train_dataset)
 
     # Get datasets
 
