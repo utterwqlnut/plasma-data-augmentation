@@ -122,7 +122,7 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
 
     val_dataset = train_dataset[-int(len(new_data)*(val_size)):]
     train_dataset = train_dataset[:-int(len(new_data)*(val_size))]
-
+    
     if balance:
         train_dataset = balance_data(train_dataset)
 
@@ -177,7 +177,7 @@ def post_hoc_collate_fn(dataset):
         [df["predict_inputs_embeds"].to(dtype=torch.float32) for df in dataset],
         padding_value=-100,
         batch_first=True)
-    
+
     output['labels'] = torch.stack([df['label'].to(dtype=torch.float32) for df in dataset]).unsqueeze(-1)
 
     return output
@@ -202,14 +202,14 @@ def distort_dataset(dataset, model, d_reps, nd_reps):
         for i, data in enumerate(dataset.predict_inputs_embeds):
             if dataset.labels[i] == 1:
                 for j in range(d_reps):
-                    new_predict_inputs_embeds.append(model(data.unsqueeze(0)).squeeze())
-                    new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0), specified_distortion_budget=np.rand()).squeeze())
+                    new_predict_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze()[:len(dataset.predict_inputs_embeds[i])])
+                    new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze())
                     new_labels.append(dataset.labels[i])
                     new_machines.append(dataset.machines[i])
                     
             else:
                 for j in range(nd_reps):
-                    new_predict_inputs_embeds.append(model(data.unsqueeze(0)).squeeze())
+                    new_predict_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze()[:len(dataset.predict_inputs_embeds[i])])
                     new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze())
                     new_labels.append(dataset.labels[i])
                     new_machines.append(dataset.machines[i])

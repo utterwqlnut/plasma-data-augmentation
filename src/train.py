@@ -3,7 +3,7 @@ import os
 from torch.utils.data import DataLoader
 import torch
 import copy
-from eval import compute_metrics
+from eval import compute_metrics, compute_metrics_during_training
 import math
 import wandb
 import numpy as np
@@ -11,7 +11,7 @@ from eval import plot_view
 
 torch.manual_seed(42)
 
-def train_post_hoc(train_dataloader, val_dataloader, optim, loss_fn, model, viewmaker, viewmaker_aug, varied_distortion_budget, max_distortion_budget, save_metric, num_epochs):
+def train_post_hoc(train_dataloader, val_dataloader, val_dataset, optim, loss_fn, model, viewmaker, viewmaker_aug, save_metric, num_epochs):
     if viewmaker_aug:
         prefix = 'Aug '
     else:
@@ -24,24 +24,10 @@ def train_post_hoc(train_dataloader, val_dataloader, optim, loss_fn, model, view
     for epoch in range(num_epochs):
         train_running_loss = 0
         val_running_loss = 0
-        running_metric = 0
-        running_accuracy = 0
-        running_f1 = 0
-        running_auc = 0
 
         for i, data in enumerate(train_dataloader):
 
             inputs, labels = (data['inputs_embeds'], data['labels'])
-
-            with torch.no_grad():
-                if viewmaker_aug:
-                    if not varied_distortion_budget:
-                        inputs = viewmaker(inputs)
-                    else:
-                        inputs = viewmaker(inputs, np.random.rand()*max_distortion_budget)
-
-            # Not training the viewmaker just post hoc
-            #inputs = inputs.detach()
 
             optim.zero_grad()
             
@@ -53,46 +39,44 @@ def train_post_hoc(train_dataloader, val_dataloader, optim, loss_fn, model, view
             optim.step()
             train_running_loss += loss.item()
 
+        model.eval()
+
         for i, data in enumerate(val_dataloader):
             inputs, labels = (data['inputs_embeds'], data['labels'])
 
             out=model(inputs)
             loss = loss_fn(out,labels)
-
-            accuracy, f1, auc = compute_metrics(out,labels)
-            running_accuracy += accuracy
-            running_f1 += f1
-            running_auc += auc
-
-            if save_metric == 'accuracy':
-                metric_result = accuracy
-            elif save_metric == 'f1':
-                metric_result = f1
-            elif save_metric == 'auc':
-                metric_result = auc
-            else:
-                print('Selected save metric does not exist defaulting to accuracy')
-                metric_result = accuracy
             
-            running_metric += metric_result
             val_running_loss+=loss.item()
 
+        accuracy, f1, auc = compute_metrics_during_training(model, val_dataset)
+        if save_metric == 'accuracy':
+            metric_result = accuracy
+        elif save_metric == 'f1':
+            metric_result = f1
+        elif save_metric == 'auc':
+            metric_result = auc
+        else:
+            print('Selected save metric does not exist defaulting to accuracy')
+            metric_result = accuracy
 
-        if running_metric/len(val_dataloader)>max_metric:
+        model.train()
+
+        if metric_result>max_metric:
             best_model = copy.deepcopy(model)
-            max_metric = running_metric/len(val_dataloader)
+            max_metric = metric_result
             best_model.metric = max_metric
         
         wandb.log({prefix+'Post Hoc Epoch': epoch+1})
         wandb.log({prefix+'Post Hoc Training Loss': train_running_loss/len(train_dataloader),
                    prefix+'Post Hoc Validation Loss': val_running_loss/len(val_dataloader),
-                   prefix+'Validation Accuracy': running_accuracy/len(val_dataloader),
-                   prefix+'Validation F1': running_f1/len(val_dataloader),
-                   prefix+'Validation AUC': running_auc/len(val_dataloader)})
+                   prefix+'Validation Accuracy': accuracy,
+                   prefix+'Validation F1': f1,
+                   prefix+'Validation AUC': auc})
 
         print(f"Epoch: {epoch+1}")
         print(f"Losses: Training Loss: {train_running_loss/len(train_dataloader)} Validation Loss: {val_running_loss/len(val_dataloader)}")
-        print(f"Metrics: Validation Accuracy: {running_accuracy/len(val_dataloader)} Validation F1: {running_f1/len(val_dataloader)} Validation AUC: {running_auc/len(val_dataloader)}")
+        print(f"Metrics: Validation Accuracy: {accuracy} Validation F1: {f1} Validation AUC: {auc}")
 
     return best_model
 
@@ -151,11 +135,12 @@ class ViewMakerTrainer():
                 train_running_e_loss += encoder_loss.item()
                 train_running_v_loss += viewmaker_loss.item()
 
+            self.viewmaker.eval()
+
             for i, data in enumerate(self.val_dataloader):
                 
                 #if data['inputs_embeds'].shape[0] % 2 !=0:
                 #    data['inputs_embeds'] = data['inputs_embeds'][:-1]
-                self.viewmaker.eval()
 
                 x1 = data['inputs_embeds']
                 x2 = data['inputs_embeds'].clone()
@@ -175,8 +160,9 @@ class ViewMakerTrainer():
                 
                 val_step+=1
 
-                self.viewmaker.train()
+            self.viewmaker.train()
 
+            self.viewmaker.flag = 'something'
             wandb.log({'Epoch': epoch+1})
             wandb.log({'Encoder Training Loss': train_running_e_loss/len(self.train_dataloader),
                    'Viewmaker Training Loss': train_running_v_loss/len(self.train_dataloader),

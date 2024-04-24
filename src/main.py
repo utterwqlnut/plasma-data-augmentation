@@ -11,6 +11,7 @@ import utils
 from post_hoc import compare_aug_no_aug
 
 torch.manual_seed(42)
+state = torch.get_rng_state()
 
 args, arg_keys = arg_parsing.get_args()
 
@@ -74,21 +75,20 @@ utils.set_up_wandb(
 trainer = ViewMakerTrainer(**viewmaker_trainer_args)
 trainer.train(viewmaker_num_epochs)
 
-
 # Generate test views
 plot_view(viewmaker, test_dataset[0]['inputs_embeds'].unsqueeze(0))
 
 # Generate Distorted Dataset
-#distorted_dataset = distort_dataset(train_dataset, viewmaker, distort_d_reps, distort_nd_reps)
+distorted_dataset = distort_dataset(train_dataset, viewmaker, distort_d_reps, distort_nd_reps)
 
 compare_aug_no_aug(train_dataset=train_dataset, 
+                   distorted_dataset=distorted_dataset,
                    test_dataset=test_dataset, 
                    val_dataset=val_dataset,
                    post_hoc_batch_size=post_hoc_batch_size,
                    post_hoc_lr=post_hoc_lr,
                    post_hoc_num_epochs=post_hoc_num_epochs,
                    post_hoc_save_metric=post_hoc_save_metric,
-                   max_distortion_budget=max_distortion_budget,
-                   varied_distortion_budget=varied_distortion_budget,
                    viewmaker=viewmaker,
+                   state=state,
                    device=device)

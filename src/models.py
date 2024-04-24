@@ -279,6 +279,7 @@ class DecompTimeSeriesViewMaker(nn.Module):
         return delta
 
     def forward(self, x, specified_distortion_budget=None):
+        lengths = [len(x[i])-len(torch.where(x[i]==-100)[0])/self.n_dim for i in range(x.shape[0])]
         out = self.add_noise_channel(x)
 
         seasonal, trend = self.decomp(out)
@@ -289,6 +290,10 @@ class DecompTimeSeriesViewMaker(nn.Module):
         delta = self.get_delta(combined,specified_distortion_budget)
 
         out = x+delta
+
+        for i,length in enumerate(lengths):
+            out[i,int(length):, ...] = -100
+
         return out
     
 class extract_tensor(nn.Module):
