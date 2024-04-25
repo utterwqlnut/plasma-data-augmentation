@@ -31,7 +31,7 @@ def compute_metrics_after_training(model, test_dataset, prefix):
     out = []
     labels = []
     for sample in test_dataset:
-        out.append(model(sample['inputs_embeds'].unsqueeze(0).to(torch.float32)).squeeze())
+        out.append(model(sample['inputs_embeds'][:-test_dataset.cutoff_steps].unsqueeze(0).to(torch.float32)).squeeze())
         labels.append(sample['label'])
     
     accuracy, f1, auc = compute_metrics(torch.stack(out),torch.stack(labels))
@@ -41,7 +41,7 @@ def compute_metrics_during_training(model, val_dataset):
     out = []
     labels = []
     for sample in val_dataset:
-        out.append(model(sample['inputs_embeds'].unsqueeze(0).to(torch.float32)).squeeze())
+        out.append(model(sample['inputs_embeds'][:-val_dataset.cutoff_steps].unsqueeze(0).to(torch.float32)).squeeze())
         labels.append(sample['label'])
     
     accuracy, f1, auc = compute_metrics(torch.stack(out),torch.stack(labels)) 

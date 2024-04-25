@@ -76,13 +76,11 @@ trainer = ViewMakerTrainer(**viewmaker_trainer_args)
 trainer.train(viewmaker_num_epochs)
 
 # Generate test views
-plot_view(viewmaker, test_dataset[0]['inputs_embeds'].unsqueeze(0))
+plot_view(viewmaker, test_dataset[0]['inputs_embeds'][:-test_dataset.cutoff_steps].unsqueeze(0))
 
 # Generate Distorted Dataset
-distorted_dataset = distort_dataset(train_dataset, viewmaker, distort_d_reps, distort_nd_reps)
 
 compare_aug_no_aug(train_dataset=train_dataset, 
-                   distorted_dataset=distorted_dataset,
                    test_dataset=test_dataset, 
                    val_dataset=val_dataset,
                    post_hoc_batch_size=post_hoc_batch_size,
@@ -90,5 +88,7 @@ compare_aug_no_aug(train_dataset=train_dataset,
                    post_hoc_num_epochs=post_hoc_num_epochs,
                    post_hoc_save_metric=post_hoc_save_metric,
                    viewmaker=viewmaker,
+                   distort_d_reps=distort_d_reps,
+                   distort_nd_reps=distort_nd_reps,
                    state=state,
                    device=device)

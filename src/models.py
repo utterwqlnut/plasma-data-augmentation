@@ -226,7 +226,6 @@ class DecompTimeSeriesViewMaker(nn.Module):
         self.activation = activation
         self.default_distortion_budget = default_distortion_budget
         self.decomp = series_decomp(25)
-        self.conv1 = nn.ConvTranspose1d(self.n_dim+1,32,kernel_size=9)
         
         if layer_type == 'lstm':
             self.netT = nn.Sequential(

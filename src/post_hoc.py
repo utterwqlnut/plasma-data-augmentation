@@ -1,4 +1,4 @@
-from data import PlasmaDataset, generate_datasets, post_hoc_collate_fn, viewmaker_collate_fn, distort_dataset
+from data import PlasmaDataset, generate_datasets, post_hoc_collate_fn, viewmaker_collate_fn, distort_dataset, BatchSampler
 from models import PlasmaLSTM, PlasmaViewEncoderLSTM, DecompTimeSeriesViewMaker, LSTMFormer
 import os
 from torch.utils.data import DataLoader
@@ -13,7 +13,6 @@ torch.manual_seed(42)
 
 def compare_aug_no_aug(
     train_dataset,
-    distorted_dataset,
     test_dataset,
     val_dataset,
     post_hoc_batch_size,
@@ -21,35 +20,52 @@ def compare_aug_no_aug(
     post_hoc_save_metric,
     post_hoc_num_epochs,
     viewmaker,
+    distort_d_reps,
+    distort_nd_reps,
     state,
     device,
 ):
     # Train an Post Hoc LSTM with No Augmentation
     print('Beginning Post Hoc Training with No Augmentations')
+
+    # Set state so runs are same accross different viewmaker changes
     torch.set_rng_state(state)
     
+    train_lengths = []
+    val_lengths = []
 
-    train_dataloader = DataLoader(train_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
-    distorted_dataloader = DataLoader(distorted_dataset, batch_size=post_hoc_batch_size, shuffle=False, collate_fn=post_hoc_collate_fn)
-    val_dataloader = DataLoader(val_dataset, batch_size=post_hoc_batch_size, shuffle=False,collate_fn=post_hoc_collate_fn)
+    for data in train_dataset:
+        train_lengths.append(len(data['inputs_embeds']))
+    
+    for data in val_dataset:
+        val_lengths.append(len(data['inputs_embeds']))
+
+    train_dataloader = DataLoader(train_dataset, batch_sampler=BatchSampler(train_lengths,post_hoc_batch_size), shuffle=False, collate_fn=post_hoc_collate_fn)
+    val_dataloader = DataLoader(val_dataset, batch_sampler=BatchSampler(val_lengths,post_hoc_batch_size), shuffle=False,collate_fn=post_hoc_collate_fn)
 
     # Simplified version of moddel
     model = LSTMFormer(n_layers=1, embedding_dim=24, n_inner=48).to(device)
     original_model = copy.deepcopy(model)
 
+    train_state = torch.get_rng_state()
+
     adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
     loss_fn = torch.nn.BCELoss()
-
+    
     best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=val_dataloader,val_dataset=val_dataset, model=model, viewmaker=viewmaker, optim=adam,loss_fn=loss_fn, save_metric=post_hoc_save_metric, num_epochs=post_hoc_num_epochs, viewmaker_aug=False)
     compute_metrics_after_training(best_model, test_dataset, prefix="No Aug ")
 
+    # Distort dataset
+    distort_dataset(train_dataset, viewmaker, distort_d_reps, distort_nd_reps)
+
     # Train an Post Hoc LSTM with Augmentation
     print('Beginning Post Hoc Training with Augmentations')
-    torch.set_rng_state(state)
 
     model = original_model
+    torch.set_rng_state(train_state)
+
     adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
     loss_fn = torch.nn.BCELoss()
 
-    best_model = train_post_hoc(train_dataloader=distorted_dataloader, val_dataloader=val_dataloader,val_dataset=val_dataset, model=model, viewmaker=viewmaker, optim=adam,loss_fn=loss_fn, save_metric=post_hoc_save_metric, num_epochs=post_hoc_num_epochs, viewmaker_aug=True)
+    best_model = train_post_hoc(train_dataloader=train_dataloader, val_dataloader=val_dataloader,val_dataset=val_dataset, model=model, viewmaker=viewmaker, optim=adam,loss_fn=loss_fn, save_metric=post_hoc_save_metric, num_epochs=post_hoc_num_epochs, viewmaker_aug=True)
     compute_metrics_after_training(best_model, test_dataset, prefix="Aug ")

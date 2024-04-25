@@ -19,25 +19,23 @@ class PlasmaDataset(Dataset):
         self.labels = []
         self.machines = []
         self.inputs_embeds = []
-        self.predict_inputs_embeds = []
         self.device = device
+        self.max_length = 2048
 
         for i in range(len(shot_data)):
             item = shot_data[i]
-            if len(item['data'])<=cutoff_steps:
+            if len(item['data'])<=cutoff_steps or len(item['data'])>=self.max_length:
                 continue
-
             self.labels.append(torch.tensor(item['label']))
             self.machines.append(item['machine'])
             self.inputs_embeds.append(torch.tensor(item['data'].values,dtype=torch.float32))
-            self.predict_inputs_embeds.append(torch.tensor(item['data'].values[:-cutoff_steps],dtype=torch.float32))
 
 
     def __getitem__(self, index):
         return {'label':self.labels[index],
                 'machine': self.machines[index], 
                 'inputs_embeds': self.inputs_embeds[index], 
-                'predict_inputs_embeds': self.predict_inputs_embeds[index]}
+                'cutoff_steps': self.cutoff_steps}
     
     def __len__(self):
         return len(self.labels)
@@ -50,14 +48,12 @@ class PlasmaDataset(Dataset):
 
     def scale(self):
         combined_full = torch.cat(self.inputs_embeds)
-        combined_predict = torch.cat(self.predict_inputs_embeds)
 
         scaler = StandardScaler().fit(combined_full)
 
         with torch.no_grad():
             for i in range(len(self.inputs_embeds)):
                 self.inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.inputs_embeds[i])),dtype=torch.float32)
-                self.predict_inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.predict_inputs_embeds[i])),dtype=torch.float32)
 
         return scaler
     
@@ -65,12 +61,10 @@ class PlasmaDataset(Dataset):
         with torch.no_grad():
             for i in range(len(self.inputs_embeds)):
                 self.inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.inputs_embeds[i])),dtype=torch.float32)
-                self.predict_inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.predict_inputs_embeds[i])),dtype=torch.float32)
 
     def move_to_device(self):
         for i in range(len(self.inputs_embeds)):
             self.inputs_embeds[i]=self.inputs_embeds[i].to(self.device)
-            self.predict_inputs_embeds[i]=self.predict_inputs_embeds[i].to(self.device)
             self.labels[i]=self.labels[i].to(self.device)
 
     def get_machine_counts(self):
@@ -120,16 +114,16 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
 
     random.shuffle(train_dataset)
 
-    val_dataset = train_dataset[-int(len(new_data)*(val_size)):]
-    train_dataset = train_dataset[:-int(len(new_data)*(val_size))]
-    
+    val_dataset = train_dataset[-int(len(train_dataset)*(val_size)):]
+    train_dataset = train_dataset[:-int(len(train_dataset)*(val_size))]
+
     if balance:
         train_dataset = balance_data(train_dataset)
 
     # Get datasets
 
     train_dataset = PlasmaDataset(
-        shot_data=train_dataset[:100],
+        shot_data=train_dataset,
         device=device
     )
 
@@ -174,7 +168,7 @@ def post_hoc_collate_fn(dataset):
     output = {}
 
     output['inputs_embeds'] = pad_sequence(
-        [df["predict_inputs_embeds"].to(dtype=torch.float32) for df in dataset],
+        [df["inputs_embeds"][:-df['cutoff_steps']].to(dtype=torch.float32) for df in dataset],
         padding_value=-100,
         batch_first=True)
 
@@ -186,38 +180,44 @@ def viewmaker_collate_fn(dataset):
     output = {}
 
     output['inputs_embeds'] = pad_sequence(
-        [df["predict_inputs_embeds"].to(dtype=torch.float32) for df in dataset],
+        [df["inputs_embeds"].to(dtype=torch.float32) for df in dataset],
         padding_value=-100,
         batch_first=True)
     output['labels'] = torch.stack([df['label'].to(dtype=torch.float32) for df in dataset]).unsqueeze(-1)
 
     return output
 
+class BatchSampler:
+    def __init__(self, lengths, batch_size):
+        self.lengths = lengths
+        self.batch_size = batch_size
+
+    def __iter__(self):
+        size = len(self.lengths)
+        indices = list(range(size))
+        random.shuffle(indices)
+
+        step = 100 * self.batch_size
+        for i in range(0, size, step):
+            pool = indices[i:i+step]
+            pool = sorted(pool, key=lambda x: self.lengths[x])
+            for j in range(0, len(pool), self.batch_size):
+                if j + self.batch_size > len(pool): # assume drop_last=True
+                    break
+                # Ideally, there should also be some shuffling here.
+                yield pool[j:j+self.batch_size]
+
+    def __len__(self):
+        return len(self.lengths) // self.batch_size
+
+
 def distort_dataset(dataset, model, d_reps, nd_reps):
     with torch.no_grad():
-        new_predict_inputs_embeds = []
-        new_inputs_embeds = []
-        new_labels = []
-        new_machines = []
-        for i, data in enumerate(dataset.predict_inputs_embeds):
+        for i, data in enumerate(dataset.inputs_embeds):
             if dataset.labels[i] == 1:
                 for j in range(d_reps):
-                    new_predict_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze()[:len(dataset.predict_inputs_embeds[i])])
-                    new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze())
-                    new_labels.append(dataset.labels[i])
-                    new_machines.append(dataset.machines[i])
+                    dataset.inputs_embeds[i] = model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze()
                     
             else:
                 for j in range(nd_reps):
-                    new_predict_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze()[:len(dataset.predict_inputs_embeds[i])])
-                    new_inputs_embeds.append(model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze())
-                    new_labels.append(dataset.labels[i])
-                    new_machines.append(dataset.machines[i])
-
-        new_dataset = copy.deepcopy(dataset)
-        new_dataset.predict_inputs_embeds = new_predict_inputs_embeds
-        new_dataset.inputs_embeds = new_inputs_embeds
-        new_dataset.labels = new_labels
-        new_dataset.machines = new_machines
-
-        return new_dataset
+                    dataset.inputs_embeds[i] = model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze()

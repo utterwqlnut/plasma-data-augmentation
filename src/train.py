@@ -1,4 +1,4 @@
-from data import PlasmaDataset, generate_datasets
+from data import PlasmaDataset, generate_datasets, BatchSampler
 import os
 from torch.utils.data import DataLoader
 import torch
@@ -66,7 +66,7 @@ def train_post_hoc(train_dataloader, val_dataloader, val_dataset, optim, loss_fn
             best_model = copy.deepcopy(model)
             max_metric = metric_result
             best_model.metric = max_metric
-        
+
         wandb.log({prefix+'Post Hoc Epoch': epoch+1})
         wandb.log({prefix+'Post Hoc Training Loss': train_running_loss/len(train_dataloader),
                    prefix+'Post Hoc Validation Loss': val_running_loss/len(val_dataloader),
@@ -96,11 +96,19 @@ class ViewMakerTrainer():
 
 
     def configure_dataloaders(self, train_dataset, val_dataset, batch_size, collate_fn):
-        self.train_dataloader = DataLoader(train_dataset, batch_size=2*batch_size, shuffle=True, collate_fn=collate_fn)
-        self.val_dataloader = DataLoader(val_dataset, batch_size=2*batch_size, shuffle=True, collate_fn=collate_fn)
+        train_lengths = []
+        val_lengths = []
+
+        for data in train_dataset:
+            train_lengths.append(len(data['inputs_embeds']))
+        
+        for data in val_dataset:
+            val_lengths.append(len(data['inputs_embeds']))
+
+        self.train_dataloader = DataLoader(train_dataset, batch_sampler=BatchSampler(train_lengths,batch_size), collate_fn=collate_fn)
+        self.val_dataloader = DataLoader(val_dataset, batch_sampler=BatchSampler(val_lengths,batch_size), collate_fn=collate_fn)
 
     def train(self, num_epochs):
-        torch.autograd.set_detect_anomaly(True)
         val_step = 0
 
         for epoch in range(num_epochs): 
@@ -115,8 +123,10 @@ class ViewMakerTrainer():
                 #    data['inputs_embeds'] = data['inputs_embeds'][:-1]
 
                 #x1, x2 = torch.chunk(data['inputs_embeds'],2)
+
                 x1 = data['inputs_embeds']
                 x2 = data['inputs_embeds'].clone()
+
                 view1 = self.viewmaker(x1)
                 view2 = self.viewmaker(x2)
 
