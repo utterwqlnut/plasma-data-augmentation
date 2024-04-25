@@ -22,7 +22,11 @@ warnings.filterwarnings('once')
 def get_d_nd_shots(model, dataset, balance=False, seed=None):
     nd_shots, d_shots = [], []
     for shot in dataset:
+<<<<<<< HEAD
         input = shot['inputs_embeds'][:-dataset.cutoff_steps]
+=======
+        input = shot['predict_inputs_embeds']
+>>>>>>> 2096893dc199e79d0123ee8b201181119f34bbf1
         out = model(input.unsqueeze(0).to(torch.float32)).squeeze()
         y_pred = np.round(out.cpu().detach().numpy())
 
@@ -203,3 +207,7 @@ lime_sweep(lstm, feats, nd_shots, label=0)
 
 # Sweep over d shots
 lime_sweep(lstm, feats, d_shots, label=1)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2096893dc199e79d0123ee8b201181119f34bbf1

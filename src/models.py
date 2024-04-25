@@ -178,7 +178,7 @@ class TimeSeriesViewMaker(nn.Module):
 
         out = self.get_delta(out,specified_distortion_budget)
 
-        out = x+out
+        out = x + out
         return out
     
 class extract_tensor(nn.Module):
