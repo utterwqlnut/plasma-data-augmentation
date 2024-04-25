@@ -95,7 +95,6 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
     new_data = []
     old_data = []
 
-    shot_data = []
     for shot in data.values():
         if shot['machine'] in included_machines:
             if shot['machine'] == new_machine:
@@ -129,7 +128,7 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
     # Get datasets
 
     train_dataset = PlasmaDataset(
-        shot_data=train_dataset[:100],
+        shot_data=train_dataset,    # [:100]
         device=device
     )
 
