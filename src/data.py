@@ -14,7 +14,7 @@ random.seed(24)
 
 class PlasmaDataset(Dataset):
 
-    def __init__(self, shot_data, device, cutoff_steps=4):
+    def __init__(self, shot_data, device, cutoff_steps=8):
         self.cutoff_steps = cutoff_steps
         self.labels = []
         self.machines = []
@@ -24,6 +24,7 @@ class PlasmaDataset(Dataset):
 
         for i in range(len(shot_data)):
             item = shot_data[i]
+            
             if len(item['data'])<=cutoff_steps or len(item['data'])>=self.max_length:
                 continue
             self.labels.append(torch.tensor(item['label']))
@@ -122,16 +123,16 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
     # Get datasets
 
     train_dataset = PlasmaDataset(
-        shot_data=train_dataset,    # [:100]
+        shot_data=train_dataset[:100],    # [:100]
         device=device
     )
 
     test_dataset = PlasmaDataset(
-        shot_data=test_dataset,
+        shot_data=test_dataset[:100],
         device=device
     )
     val_dataset = PlasmaDataset(
-        shot_data=val_dataset,
+        shot_data=val_dataset[:100],
         device=device
     )
     scaler = train_dataset.scale()
@@ -177,7 +178,6 @@ def post_hoc_collate_fn(dataset):
 
 def viewmaker_collate_fn(dataset):
     output = {}
-
     output['inputs_embeds'] = pad_sequence(
         [df["inputs_embeds"].to(dtype=torch.float32) for df in dataset],
         padding_value=-100,
@@ -200,14 +200,14 @@ class BatchSampler:
         for i in range(0, size, step):
             pool = indices[i:i+step]
             pool = sorted(pool, key=lambda x: self.lengths[x])
-            for j in range(0, len(pool), self.batch_size):
-                if j + self.batch_size > len(pool): # assume drop_last=True
-                    break
-                # Ideally, there should also be some shuffling here.
-                yield pool[j:j+self.batch_size]
+            start_batches = list(range(0,len(pool),self.batch_size))
+            random.shuffle(start_batches)
+
+            for j in range(len(start_batches)):
+                yield pool[start_batches[j]:start_batches[j]+self.batch_size]
 
     def __len__(self):
-        return len(self.lengths) // self.batch_size
+        return (len(self.lengths)+self.batch_size-1) // self.batch_size
 
 
 def distort_dataset(dataset, model, d_reps, nd_reps):

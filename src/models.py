@@ -124,6 +124,22 @@ class PlasmaViewEncoderLSTM(nn.Module):
         mean = x.mean(dim=1)
         out = self.out(mean)
         return out
+    
+class PlasmaViewEncoderTransformer(nn.Module):
+    def __init__(self, n_input, n_layers, h_size, out_size):
+        super().__init__()
+        self.n_input = n_input
+        self.n_layers = n_layers
+        self.h_size = h_size
+        self.transformer_layer = nn.TransformerEncoderLayer(n_input,1,h_size, batch_first=True)
+        self.transformer = nn.TransformerEncoder(self.transformer_layer,n_layers)
+        self.out = nn.Sequential(nn.LayerNorm(n_input),nn.ReLU(), nn.Linear(n_input,out_size),nn.LayerNorm(out_size)) 
+    
+    def forward(self, x):
+        x = self.transformer(x)
+        mean = x.mean(dim=1)
+        out = self.out(mean)
+        return out
 
 class TimeSeriesViewMaker(nn.Module):
     # Add noise channel -> Basic Net -> Obtain pertrubation projected onto L1 sphere -> Add pertrubitive noise -> Adversial Loss

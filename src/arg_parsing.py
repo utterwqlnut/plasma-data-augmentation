@@ -34,11 +34,13 @@ def get_args():
     parser.add_argument("--viewmaker_loss_weight", type=float, default=0.5)
     parser.add_argument("--viewmaker_batch_size", type=int, default=12)
     parser.add_argument("--viewmaker_num_epochs", type=int, default=10)
+    parser.add_argument("--viewmaker_num_steps", type=int, default=-1)
     parser.add_argument("--v_lr", type=float, default=1e-3)
 
     parser.add_argument("--post_hoc_n_layers", type=int, default=2)
     parser.add_argument("--post_hoc_h_size", type=int, default=12)
     parser.add_argument("--post_hoc_num_epochs", type=int, default=20)
+    parser.add_argument("--post_hoc_num_steps", type=int, default=-1)
     parser.add_argument("--post_hoc_save_metric", type=str, default="accuracy")
     parser.add_argument("--post_hoc_batch_size", type=int, default=128)
     parser.add_argument("--post_hoc_lr", type=float, default=1e-3)

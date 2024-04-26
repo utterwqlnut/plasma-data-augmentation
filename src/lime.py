@@ -178,11 +178,11 @@ file_name = 'Full_HDL_dataset_unnormalized_no_nan_column_names_w_shot.pickle'
 train_dataset, test_dataset, val_dataset = generate_datasets(file_name,0.1,0.1,included_machines=included_machines, new_machine='cmod',case=case, balance=balance, device=device)
 
 # Load previously saved model
-lstm_path = '../models/toy_lstm.pt'
-aug_lstm_path = '../models/toy_lstm_aug.pt'
+#lstm_path = '../models/toy_lstm.pt'
+#aug_lstm_path = '../models/toy_lstm_aug.pt'
 
 lstm = PlasmaLSTM(12,post_hoc_n_layers,post_hoc_h_size).to(device)
-lstm.load_state_dict(torch.load(lstm_path))
+#lstm.load_state_dict(torch.load(lstm_path))
 lstm.eval()
 
 '''lstm_aug = PlasmaLSTM(12,post_hoc_n_layers,post_hoc_h_size).to(device)
