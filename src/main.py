@@ -9,8 +9,11 @@ from train import train_post_hoc, ViewMakerTrainer
 import arg_parsing
 import utils
 from post_hoc import compare_aug_no_aug
+from lightning import Fabric
 
 torch.manual_seed(42)
+torch.set_float32_matmul_precision('medium')
+
 state = torch.get_rng_state()
 
 args, arg_keys = arg_parsing.get_args()
@@ -21,12 +24,19 @@ arg_values = {key: getattr(args, key) for key in arg_keys}
 # Unpack the dictionary to create local variables
 locals().update(arg_values)
 
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# Change to specifications of computer
+fabric = Fabric(accelerator = "cuda" if torch.cuda.is_available() else "cpu", devices=1, precision="16-mixed" if torch.cuda.is_available() else "bf16-mixed")
+fabric.launch()
 
 # Get Dataset
 file_name = 'Full_HDL_dataset_unnormalized_no_nan_column_names_w_shot.pickle'
-train_dataset, test_dataset, val_dataset = generate_datasets(file_name,0.1,0.05,included_machines=included_machines, new_machine='cmod',case=case, balance=balance, device=device)
+
+if case != 4:
+    val_size = 0.05
+else:
+    val_size = 0.1
+
+train_dataset, test_dataset, val_dataset = generate_datasets(file_name,0.1,val_size,included_machines=included_machines, new_machine='cmod',case=case, balance=balance)
 
 if viewmaker_num_steps != -1:
     viewmaker_num_epochs = viewmaker_num_steps//(len(train_dataset)//viewmaker_batch_size)
@@ -40,7 +50,7 @@ activations = {
     'tanh': torch.nn.Tanh(),
 }
 
-# Train Viewmaker
+# Setup Viewmaker and Encoder 
 viewmaker_args = {
     "n_dim": 12,
     "n_layers": viewmaker_n_layers,
@@ -58,9 +68,9 @@ encoder_args = {
 }
 
 
-viewmaker = DecompTimeSeriesViewMaker(**viewmaker_args).to(device)
+viewmaker = DecompTimeSeriesViewMaker(**viewmaker_args)
 
-encoder = PlasmaViewEncoderTransformer(**encoder_args).to(device)
+encoder = PlasmaViewEncoderTransformer(**encoder_args)
 
 
 viewmaker_trainer_args = {
@@ -74,21 +84,22 @@ viewmaker_trainer_args = {
     "train_dataset": train_dataset,
     "val_dataset": val_dataset,
     "collate_fn": viewmaker_collate_fn,
+    "fabric": fabric,
 }
 
 utils.set_up_wandb(
         training_args=viewmaker_trainer_args, seed=42, parsed_args=arg_values)
 
+# Train Viewmaker
 trainer = ViewMakerTrainer(**viewmaker_trainer_args)
 trainer.train(viewmaker_num_epochs)
 
 # Generate test views
-plot_view(viewmaker, test_dataset[0]['inputs_embeds'][:-test_dataset.cutoff_steps].unsqueeze(0))
+plot_view(viewmaker, test_dataset[0]['inputs_embeds'][:-test_dataset.cutoff_steps].unsqueeze(0).to(fabric.device))
 
-# Generate Distorted Dataset
-
-compare_aug_no_aug(train_dataset=train_dataset, 
-                   test_dataset=test_dataset, 
+# Compare post hoc models
+compare_aug_no_aug(train_dataset=train_dataset,
+                   test_dataset=test_dataset,
                    val_dataset=val_dataset,
                    post_hoc_batch_size=post_hoc_batch_size,
                    post_hoc_lr=post_hoc_lr,
@@ -98,4 +109,4 @@ compare_aug_no_aug(train_dataset=train_dataset,
                    distort_d_reps=distort_d_reps,
                    distort_nd_reps=distort_nd_reps,
                    state=state,
-                   device=device)
+                   fabric=fabric,)

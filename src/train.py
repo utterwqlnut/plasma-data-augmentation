@@ -1,24 +1,25 @@
 from data import PlasmaDataset, generate_datasets, BatchSampler
 import os
 from torch.utils.data import DataLoader
+from torch.optim.lr_scheduler import ExponentialLR
 import torch
 import copy
 from eval import compute_metrics, compute_metrics_during_training, plot_view
 import math
 import wandb
 import numpy as np
-from accelerate import Accelerator
-
-accelerator = Accelerator()
 
 torch.manual_seed(42)
 
-def train_post_hoc(train_dataloader, val_dataloader, val_dataset, optim, loss_fn, model, viewmaker, viewmaker_aug, save_metric, num_epochs):
-    
-    model, train_dataloader, val_dataloader, optim = accelerator.prepare(model, train_dataloader, val_dataloader, optim)
-    
+def train_post_hoc(train_dataloader, val_dataloader, val_dataset, optim, loss_fn, model, viewmaker, viewmaker_aug, save_metric, num_epochs, fabric):
+
+    model, optim = fabric.setup(model,optim)
+    scheduler = ExponentialLR(optim, gamma=0.9)
+
+    train_dataloader, val_dataloader = fabric.setup_dataloaders(train_dataloader, val_dataloader)
+
     total_steps = 0
-    eval_steps = 2
+    eval_steps = 2 # Low steps for testing change on cluster to approx 100
     train_running_loss = 0
 
     if viewmaker_aug:
@@ -38,12 +39,12 @@ def train_post_hoc(train_dataloader, val_dataloader, val_dataset, optim, loss_fn
             inputs, labels = (data['inputs_embeds'], data['labels'])
 
             optim.zero_grad()
-            
+
             out = model(inputs)
 
-            loss = loss_fn(out, labels) 
+            loss = loss_fn(out, labels)
 
-            loss.backward()
+            fabric.backward(loss)
 
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
 
@@ -62,10 +63,10 @@ def train_post_hoc(train_dataloader, val_dataloader, val_dataset, optim, loss_fn
 
                     out=model(inputs)
                     loss = loss_fn(out,labels)
-                    
+
                     val_running_loss+=loss.item()
 
-                accuracy, f1, auc = compute_metrics_during_training(model, val_dataset)
+                accuracy, f1, auc = compute_metrics_during_training(model, val_dataset, fabric.device)
                 if save_metric == 'accuracy':
                     metric_result = accuracy
                 elif save_metric == 'f1':
@@ -83,7 +84,8 @@ def train_post_hoc(train_dataloader, val_dataloader, val_dataset, optim, loss_fn
                     max_metric = metric_result
                     best_model.metric = max_metric
 
-                wandb.log({prefix+'Post Hoc Epoch': total_steps/len(train_dataloader)})
+                wandb.log({prefix+'Post Hoc Epoch': total_steps/len(train_dataloader), prefix+'Post Hoc Total Steps': total_steps})
+                wandb.log({prefix+'Post Hoc Learning Rate': scheduler.get_last_lr()[0]})
                 wandb.log({prefix+'Post Hoc Training Loss': train_running_loss/eval_steps,
                         prefix+'Post Hoc Validation Loss': val_running_loss/len(val_dataloader),
                         prefix+'Validation Accuracy': accuracy,
@@ -95,12 +97,14 @@ def train_post_hoc(train_dataloader, val_dataloader, val_dataset, optim, loss_fn
                 print(f"Metrics: Validation Accuracy: {accuracy} Validation F1: {f1} Validation AUC: {auc}")
 
                 train_running_loss = 0
-
+            
+                scheduler.step()
 
     return best_model
 
 class ViewMakerTrainer():
-    def __init__(self, train_dataset, val_dataset,batch_size, t, v_loss_weight, collate_fn, viewmaker, encoder, v_lr, e_lr):
+    def __init__(self, train_dataset, val_dataset,batch_size, t, v_loss_weight, collate_fn, viewmaker, encoder, v_lr, e_lr, fabric):
+        self.fabric=fabric
         self.configure_dataloaders(train_dataset, val_dataset, batch_size, collate_fn)
         self.t = t
         self.v_loss_weight = v_loss_weight
@@ -109,9 +113,16 @@ class ViewMakerTrainer():
         self.encoder = encoder
         self.configure_optimizers(v_lr, e_lr)
 
+        self.viewmaker, self.viewmaker_optim = self.fabric.setup(self.viewmaker, self.viewmaker_optim)
+        self.encoder, self.encoder_optim = self.fabric.setup(self.encoder, self.encoder_optim)
+
+        self.train_dataloader, self.val_dataloader = fabric.setup_dataloaders(self.train_dataloader, self.val_dataloader)
+
     def configure_optimizers(self, v_lr, e_lr):
         self.encoder_optim = torch.optim.AdamW(list(self.encoder.parameters()), lr=e_lr)
         self.viewmaker_optim = torch.optim.AdamW(self.viewmaker.parameters(), lr=v_lr)
+        self.scheduler_e = ExponentialLR(self.encoder_optim, gamma=0.9)
+        self.scheduler_v = ExponentialLR(self.viewmaker_optim, gamma=0.9)
 
 
     def configure_dataloaders(self, train_dataset, val_dataset, batch_size, collate_fn):
@@ -120,7 +131,7 @@ class ViewMakerTrainer():
 
         for data in train_dataset:
             train_lengths.append(len(data['inputs_embeds']))
-        
+
         for data in val_dataset:
             val_lengths.append(len(data['inputs_embeds']))
 
@@ -128,20 +139,16 @@ class ViewMakerTrainer():
         self.val_dataloader = DataLoader(val_dataset, batch_sampler=BatchSampler(val_lengths,batch_size), collate_fn=collate_fn)
 
     def train(self, num_epochs):
-        # Accelerator setup
-        self.viewmaker, self.encoder, self.encoder_optim, self.viewmaker_optim, self.train_dataloader, self.val_dataloader = accelerator.prepare(
-            self.viewmaker, self.encoder, self.encoder_optim, self.viewmaker_optim, self.train_dataloader, self.val_dataloader)
-        
         val_count = 0
-        eval_steps = 2
+        eval_steps = 2 # Low steps for testing change on cluster to approx 100
         total_steps = 0
         train_running_e_loss = 0
         train_running_v_loss = 0
 
-        for epoch in range(num_epochs): 
+        for epoch in range(num_epochs):
             #train_running_e_loss = 0
             #train_running_v_loss = 0
-           
+
             for i, data in enumerate(self.train_dataloader):
 
                 #if data['inputs_embeds'].shape[0] % 2 !=0:
@@ -158,13 +165,13 @@ class ViewMakerTrainer():
                 encoder_loss, _ = AdversarialSimCLRLoss(self.encoder(view1.detach()), self.encoder(view2.detach()), self.t, self.v_loss_weight).get_loss()
 
                 self.encoder.zero_grad()
-                accelerator.backward(encoder_loss)
+                self.fabric.backward(encoder_loss)
                 self.encoder_optim.step()
 
                 _, viewmaker_loss = AdversarialSimCLRLoss(self.encoder(view1), self.encoder(view2), self.t, self.v_loss_weight).get_loss()
 
                 self.viewmaker.zero_grad()
-                accelerator.backward(viewmaker_loss)
+                self.fabric.backward(viewmaker_loss)
                 self.viewmaker_optim.step()
 
                 train_running_e_loss += encoder_loss.item()
@@ -176,15 +183,15 @@ class ViewMakerTrainer():
                     self.viewmaker.eval()
                     val_running_e_loss = 0
                     val_running_v_loss = 0
-                
+
                     for i, data in enumerate(self.val_dataloader):
-                        
+
                         #if data['inputs_embeds'].shape[0] % 2 !=0:
                         #    data['inputs_embeds'] = data['inputs_embeds'][:-1]
 
                         x1 = data['inputs_embeds']
                         x2 = data['inputs_embeds'].clone()
-                        
+
                         view1_embd = self.encoder(self.viewmaker(x1))
                         view2_embd = self.encoder(self.viewmaker(x2))
 
@@ -197,13 +204,15 @@ class ViewMakerTrainer():
                             x = data['inputs_embeds'][0][:,0]
                             length = len(x[x!=-100])
                             plot_view(self.viewmaker, data['inputs_embeds'][0].unsqueeze(0)[:,:length], title='Example Val View')
-                        
+
                     val_count+=1
-        
+
                     self.viewmaker.train()
 
                     self.viewmaker.flag = 'something'
-                    wandb.log({'Epoch': total_steps/len(self.train_dataloader)})
+                    wandb.log({'Epoch': total_steps/len(self.train_dataloader), 'Total Steps': total_steps})
+                    wandb.log({'Viewmaker Learning Rate': self.scheduler_v.get_last_lr()[0]})
+                    wandb.log({'Encoder Learning Rate': self.scheduler_e.get_last_lr()[0]})
                     wandb.log({'Encoder Training Loss': train_running_e_loss/eval_steps,
                         'Viewmaker Training Loss': train_running_v_loss/eval_steps,
                         'Viewmaker Validation Loss': val_running_v_loss/len(self.val_dataloader),
@@ -215,6 +224,9 @@ class ViewMakerTrainer():
 
                     train_running_e_loss = 0
                     train_running_v_loss = 0
+
+                    self.scheduler_e.step()
+                    self.scheduler_v.step()
 
 
 def l2_normalize(x, dim=1):
@@ -252,7 +264,7 @@ class AdversarialSimCLRLoss(object):
         **kwargs
     ):
         '''Adversarial version of SimCLR loss.
-        
+
         Args:
             embs1: embeddings of the first views of the inputs
             embs1: embeddings of the second views of the inputs
@@ -276,6 +288,3 @@ class AdversarialSimCLRLoss(object):
         encoder_loss = simclr_loss.get_loss()
         view_maker_loss = -encoder_loss * self.view_maker_loss_weight
         return encoder_loss, view_maker_loss
-
-
-

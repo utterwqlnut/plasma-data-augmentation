@@ -25,24 +25,24 @@ def plot_view(model, input, title='Example Test View'):
 
     wandb.log({title:wandb.Image(fig)})
 
-def compute_metrics_after_training(model, test_dataset, prefix):
+def compute_metrics_after_training(model, test_dataset, device, prefix):
     model.eval()
 
     out = []
     labels = []
     for sample in test_dataset:
-        out.append(model(sample['inputs_embeds'][:-test_dataset.cutoff_steps].unsqueeze(0).to(torch.float32)).squeeze())
+        out.append(model(sample['inputs_embeds'][:-test_dataset.cutoff_steps].unsqueeze(0).to(device)).squeeze())
         labels.append(sample['label'])
-    
+
     accuracy, f1, auc = compute_metrics(torch.stack(out),torch.stack(labels))
     wandb.log({prefix+"Post Hoc Accuracy": accuracy, prefix+"Post Hoc F1": f1, prefix+"Post Hoc AUC": auc})
 
-def compute_metrics_during_training(model, val_dataset):
+def compute_metrics_during_training(model, val_dataset, device):
     out = []
     labels = []
     for sample in val_dataset:
-        out.append(model(sample['inputs_embeds'][:-val_dataset.cutoff_steps].unsqueeze(0).to(torch.float32)).squeeze())
+        out.append(model(sample['inputs_embeds'][:-val_dataset.cutoff_steps].unsqueeze(0).to(device)).squeeze())
         labels.append(sample['label'])
-    
-    accuracy, f1, auc = compute_metrics(torch.stack(out),torch.stack(labels)) 
+
+    accuracy, f1, auc = compute_metrics(torch.stack(out),torch.stack(labels))
     return accuracy, f1, auc

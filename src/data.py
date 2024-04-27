@@ -14,17 +14,16 @@ random.seed(24)
 
 class PlasmaDataset(Dataset):
 
-    def __init__(self, shot_data, device, cutoff_steps=8):
+    def __init__(self, shot_data, cutoff_steps=8):
         self.cutoff_steps = cutoff_steps
         self.labels = []
         self.machines = []
         self.inputs_embeds = []
-        self.device = device
         self.max_length = 2048
 
         for i in range(len(shot_data)):
             item = shot_data[i]
-            
+
             if len(item['data'])<=cutoff_steps or len(item['data'])>=self.max_length:
                 continue
             self.labels.append(torch.tensor(item['label']))
@@ -34,13 +33,13 @@ class PlasmaDataset(Dataset):
 
     def __getitem__(self, index):
         return {'label':self.labels[index],
-                'machine': self.machines[index], 
-                'inputs_embeds': self.inputs_embeds[index], 
+                'machine': self.machines[index],
+                'inputs_embeds': self.inputs_embeds[index],
                 'cutoff_steps': self.cutoff_steps}
-    
+
     def __len__(self):
         return len(self.labels)
-    
+
     def load_file(file_name):
         file = open(file_name,'rb')
         data = pickle.load(file)
@@ -57,7 +56,7 @@ class PlasmaDataset(Dataset):
                 self.inputs_embeds[i] = torch.tensor(normalize(scaler.transform(self.inputs_embeds[i])),dtype=torch.float32)
 
         return scaler
-    
+
     def scale_w_scaler(self, scaler):
         with torch.no_grad():
             for i in range(len(self.inputs_embeds)):
@@ -80,10 +79,10 @@ class PlasmaDataset(Dataset):
                 d3d_count+=1
             else:
                 east_count+=1
-            
+
         return cmod_count, d3d_count, east_count
 
-def generate_datasets(file_name: str, test_size: float, val_size: float, device, included_machines=['cmod','d3d','east'], new_machine='cmod', case=4, balance=False):
+def generate_datasets(file_name: str, test_size: float, val_size: float, included_machines=['cmod','d3d','east'], new_machine='cmod', case=4, balance=False):
     data = PlasmaDataset.load_file(os.path.dirname(__file__)+'/../data/'+file_name)
 
     # Convert to list of dicts
@@ -99,7 +98,7 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
 
     random.shuffle(new_data)
     random.shuffle(old_data)
-    
+
     test_dataset = new_data[:int(len(new_data)*test_size)]
     new_data = new_data[int(len(new_data)*(test_size)):]
 
@@ -123,25 +122,22 @@ def generate_datasets(file_name: str, test_size: float, val_size: float, device,
     # Get datasets
 
     train_dataset = PlasmaDataset(
-        shot_data=train_dataset[:100],    # [:100]
-        device=device
+        shot_data=train_dataset[:100],    # keep during testing
     )
 
     test_dataset = PlasmaDataset(
-        shot_data=test_dataset[:100],
-        device=device
+        shot_data=test_dataset[:100],     # keep during testing
     )
     val_dataset = PlasmaDataset(
-        shot_data=val_dataset[:100],
-        device=device
+        shot_data=val_dataset[:100],      # keep during testing
     )
     scaler = train_dataset.scale()
     test_dataset.scale_w_scaler(scaler)
     val_dataset.scale_w_scaler(scaler)
 
-    train_dataset.move_to_device()
-    test_dataset.move_to_device()
-    val_dataset.move_to_device()
+    #train_dataset.move_to_device()
+    #test_dataset.move_to_device()
+    #val_dataset.move_to_device()
 
     return train_dataset, test_dataset, val_dataset
 
@@ -163,7 +159,7 @@ def balance_data(shot_data):
 
     return new_data
 
-   
+
 def post_hoc_collate_fn(dataset):
     output = {}
 
@@ -200,23 +196,23 @@ class BatchSampler:
         for i in range(0, size, step):
             pool = indices[i:i+step]
             pool = sorted(pool, key=lambda x: self.lengths[x])
-            start_batches = list(range(0,len(pool),self.batch_size))
+            start_batches = list(range(0,len(pool),self.batch_size))[:-1]
             random.shuffle(start_batches)
 
             for j in range(len(start_batches)):
                 yield pool[start_batches[j]:start_batches[j]+self.batch_size]
 
     def __len__(self):
-        return (len(self.lengths)+self.batch_size-1) // self.batch_size
+        return len(self.lengths) // self.batch_size
 
 
-def distort_dataset(dataset, model, d_reps, nd_reps):
+def distort_dataset(dataset, model, d_reps, nd_reps, device):
     with torch.no_grad():
         for i, data in enumerate(dataset.inputs_embeds):
             if dataset.labels[i] == 1:
                 for j in range(d_reps):
-                    dataset.inputs_embeds[i] = model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze()
-                    
+                    dataset.inputs_embeds[i] = model(dataset.inputs_embeds[i].unsqueeze(0).to(device)).squeeze()
+
             else:
                 for j in range(nd_reps):
-                    dataset.inputs_embeds[i] = model(dataset.inputs_embeds[i].unsqueeze(0)).squeeze()
+                    dataset.inputs_embeds[i] = model(dataset.inputs_embeds[i].unsqueeze(0).to(device)).squeeze()
