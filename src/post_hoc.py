@@ -8,7 +8,6 @@ from eval import compute_metrics, plot_view, compute_metrics_after_training
 from train import train_post_hoc, ViewMakerTrainer
 import arg_parsing
 import utils
-torch.manual_seed(42)
 
 
 def compare_aug_no_aug(
@@ -29,7 +28,7 @@ def compare_aug_no_aug(
     print('Beginning Post Hoc Training with No Augmentations')
 
     # Set state so runs are same accross different viewmaker changes
-    torch.set_rng_state(state)
+    fabric.seed_everything(42)
 
     train_lengths = []
     val_lengths = []
@@ -43,12 +42,11 @@ def compare_aug_no_aug(
     train_dataloader = DataLoader(train_dataset, batch_sampler=BatchSampler(train_lengths,post_hoc_batch_size), shuffle=False, collate_fn=post_hoc_collate_fn)
     val_dataloader = DataLoader(val_dataset, batch_sampler=BatchSampler(val_lengths,post_hoc_batch_size), shuffle=False,collate_fn=post_hoc_collate_fn)
 
-    # Simplified version of moddel for testing
+    # Simplified version of moddel for testing, change when running
     model = LSTMFormer(n_layers=1, embedding_dim=24, n_inner=48)
     original_model = copy.deepcopy(model)
 
-    train_state = torch.get_rng_state()
-
+    fabric.seed_everything(42)
     adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
     loss_fn = torch.nn.BCELoss()
 
@@ -62,8 +60,7 @@ def compare_aug_no_aug(
     print('Beginning Post Hoc Training with Augmentations')
 
     model = original_model
-    torch.set_rng_state(train_state)
-
+    fabric.seed_everything(42)
     adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
     loss_fn = torch.nn.BCELoss()
 
