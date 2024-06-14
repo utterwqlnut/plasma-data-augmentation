@@ -36,6 +36,9 @@ def get_args():
     parser.add_argument("--viewmaker_batch_size", type=int, default=12)
     parser.add_argument("--viewmaker_num_epochs", type=int, default=10)
     parser.add_argument("--viewmaker_num_steps", type=int, default=-1)
+    parser.add_argument("--viewmaker_num_pretrain_epochs", type=int, default=10)
+    parser.add_argument("--viewmaker_num_pretrain_steps", type=int, default=-1)
+    parser.add_argument("--v_p_lr", type=int, default=1e-3)
     parser.add_argument("--v_lr", type=float, default=1e-3)
 
     parser.add_argument("--post_hoc_n_layers", type=int, default=2)
