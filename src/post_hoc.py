@@ -8,6 +8,7 @@ from eval import compute_metrics, plot_view, compute_metrics_after_training
 from train import train_post_hoc, ViewMakerTrainer
 import arg_parsing
 import utils
+from utils import seed_everything
 
 
 def compare_aug_no_aug(
@@ -23,30 +24,39 @@ def compare_aug_no_aug(
     distort_nd_reps,
     state,
     fabric,
+    train_ecs=3,
 ):
+
     # Train an Post Hoc LSTM with No Augmentation
     print('Beginning Post Hoc Training with No Augmentations')
 
     # Set state so runs are same accross different viewmaker changes
-    fabric.seed_everything(42)
+    seed_everything(42)
+
+    windowed_train = copy.deepcopy(train_dataset)
+
+    windowed_train.window(True, train_ecs)
+    val_dataset.window(False,1)
+    test_dataset.window(False,1)
 
     train_lengths = []
     val_lengths = []
 
-    for data in train_dataset:
+    for data in windowed_train:
         train_lengths.append(len(data['inputs_embeds']))
 
     for data in val_dataset:
         val_lengths.append(len(data['inputs_embeds']))
 
-    train_dataloader = DataLoader(train_dataset, batch_sampler=BatchSampler(train_lengths,post_hoc_batch_size), shuffle=False, collate_fn=post_hoc_collate_fn)
+    train_dataloader = DataLoader(windowed_train, batch_sampler=BatchSampler(train_lengths,post_hoc_batch_size), shuffle=False, collate_fn=post_hoc_collate_fn)
     val_dataloader = DataLoader(val_dataset, batch_sampler=BatchSampler(val_lengths,post_hoc_batch_size), shuffle=False,collate_fn=post_hoc_collate_fn)
 
     # Simplified version of moddel for testing, change when running
-    model = LSTMFormer(n_layers=1, embedding_dim=24, n_inner=48)
+    model = LSTMFormer()
     original_model = copy.deepcopy(model)
 
-    fabric.seed_everything(42)
+    seed_everything(42)
+
     adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
     loss_fn = torch.nn.BCELoss()
 
@@ -55,12 +65,20 @@ def compare_aug_no_aug(
 
     # Distort dataset
     distort_dataset(train_dataset, viewmaker, distort_d_reps, distort_nd_reps, fabric.device)
+    windowed_train = copy.deepcopy(train_dataset)
+    windowed_train.window(True,train_ecs)
+
+    train_lengths = []
+    for data in windowed_train:
+        train_lengths.append(len(data['inputs_embeds']))
+
+    train_dataloader = DataLoader(windowed_train, batch_sampler=BatchSampler(train_lengths,post_hoc_batch_size), shuffle=False, collate_fn=post_hoc_collate_fn)
 
     # Train an Post Hoc LSTM with Augmentation
     print('Beginning Post Hoc Training with Augmentations')
 
     model = original_model
-    fabric.seed_everything(42)
+    seed_everything(42)
     adam = torch.optim.Adam(params=model.parameters(),lr=post_hoc_lr)
     loss_fn = torch.nn.BCELoss()
 

@@ -21,7 +21,6 @@ def get_args():
     parser.add_argument("--viewmaker_n_layers", type=int, default=3)
     parser.add_argument("--viewmaker_activation", type=str, default="relu")
     parser.add_argument("--training_distortion_budget", type=float, default=0.1)
-    parser.add_argument("--max_distortion_budget", type=float, default=0.2)
     parser.add_argument("--viewmaker_hidden_dim", type=int, default=64)
     parser.add_argument("--viewmaker_layer_type", type=str, default="lstm")
 
@@ -29,6 +28,8 @@ def get_args():
     parser.add_argument("--encoder_hidden_dim", type=int, default=64)
     parser.add_argument("--encoder_out_size", type=int, default=64)
     parser.add_argument("--e_lr", type=float, default=1e-3)
+
+    parser.add_argument("--m_lr", type=float, default=1e-3)
 
     parser.add_argument("--viewmaker_loss_t", type=float, default=0.0001)
     parser.add_argument("--viewmaker_loss_weight", type=float, default=0.5)
@@ -47,7 +48,6 @@ def get_args():
 
     parser.add_argument("--distort_d_reps", type=int, default=1)
     parser.add_argument("--distort_nd_reps", type=int, default=1)
-    parser.add_argument("--varied_distortion_budget", type=str2bool, default=True)
 
     parser.add_argument("--case", type=int, default=4)
 

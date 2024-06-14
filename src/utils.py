@@ -5,15 +5,17 @@ import socket
 import subprocess
 import shutil
 import numpy as np
+import random
+import torch
 
-def set_up_wandb(training_args, seed, parsed_args):
+def set_up_wandb(seed, parsed_args):
     """Set up wandb for logging.
-    
+
     Args:
         model (PlasmaTransformer): The model to be trained.
         training_args (TrainingArguments): The training arguments.
         seed (int): The random seed.
-        
+
     Returns:
         None
     """
@@ -25,7 +27,7 @@ def set_up_wandb(training_args, seed, parsed_args):
     sync_offline_wandb_runs()
 
     # zip model.config and training_args into a single dictionary
-    wandb_config = {**training_args, **parsed_args}
+    wandb_config = {**parsed_args}
     wandb.config.update(wandb_config)
     wandb.log({"seed": seed})
     # os.environ["WANDB_LOG_MODEL"] = "end"
@@ -41,7 +43,7 @@ def check_wandb_connection(host="api.wandb.ai", port=443, timeout=5):
             return True
     except socket.error:
         return False
-    
+
 
 def sync_offline_wandb_runs():
     """Sync offline wandb runs with the wandb server. Deletes old runs."""
@@ -52,3 +54,13 @@ def sync_offline_wandb_runs():
             # Uncomment the following line to remove the synced run directory
             shutil.rmtree(run_dir)
     return
+
+def seed_everything(seed=42):
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
