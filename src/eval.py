@@ -16,7 +16,7 @@ def plot_view(model, input, title='Example Test View'):
     input = input.to(torch.float32)
     out1 = model(input).squeeze().cpu().detach().numpy()
     out2 = model(input).squeeze().cpu().detach().numpy()
-    fig, ax = plt.subplots(3,4)
+    fig, ax = plt.subplots(4,3)
     for i in range(12):
         idx1 = i%4
         idx2 = i//4
